@@ -32,7 +32,7 @@ app.use(morgon("dev"))
 
 app.use((req, res, next) => auth.authenticate(req, res, next))
 
-if(NODE_ENV === 'PRODUCTION') {
+if(NODE_ENV === 'production') {
   app.use(express.static('build'))
 
   app.get('*', (req, res) => {
