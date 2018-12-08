@@ -6,9 +6,6 @@
   "author": "brajesh jaishwal",
   "license": "MIT",
   "dependencies": {
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "cluster": "^0.7.7",
@@ -19,7 +16,11 @@
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.3.15",
     "mongoose-type-email": "^1.0.10",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "validator": "^10.9.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-scripts": "2.1.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -29,13 +30,13 @@
   },
   "scripts": {
     "start-1": "react-scripts start",
-    "start" : "node server.js",
+    "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "engines": {
-    "node": "10.x"
+    "node": "8.x"
   },
   "eslintConfig": {
     "extends": "react-app"
