@@ -16,6 +16,8 @@ class RegisterComponent extends Component {
         super(props)
         this.state = {
             name: '',
+            email: '',
+            phone:'',
             password: '',
             open: true,
             passwordError: 'length > 8, special character, number, capital letter',
@@ -45,7 +47,7 @@ class RegisterComponent extends Component {
     onSubmitHandler = async (event) => {
         event.preventDefault()
         console.log(this.state.name)
-        if(!this.state.name || !this.state.password)
+        if(!this.state.name || !this.state.password || !this.state.phone || !this.state.email)
         {
             alert('please enter required values.')
             return
@@ -74,7 +76,7 @@ class RegisterComponent extends Component {
                         onChange={this.onChangeHandler} />
                     { this.props.error && <span style={{color:'red'}}>{this.props.error}</span>}
                     { this.state.passwordError && <span style={{color:'red'}}>{this.state.passwordError}</span>}
-                    { registered && <span style={{color:'green'}}>Now you are registered, please login to proceed.</span>}
+                    { registered && <span style={{color:'green'}}>Now you are registered, please <a href='/login'>login</a> to proceed.</span>}
                     <Divider></Divider>
                     <Button name='register' primary fluid
                         onClick = {this.onSubmitHandler}

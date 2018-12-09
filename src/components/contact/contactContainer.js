@@ -4,29 +4,50 @@ import ContactComponent from './contact';
 
 export default class ContactContainerComponent extends Component {
     state = {
-        activePage: 1
+        activePage: 1,
+        totalPages: 5,
+        searchString: '',
+        searchBy: 'name',
+        sortBy: 'name'
     }
 
     handlePaginationChange = (e, { activePage }) => {
         this.setState({ activePage })
     }
 
+    onSearch = () => {
+
+    }
+
+    onSort = () => {
+
+    }
+
+    onChangeHandler = e => {
+        this.setState({[e.target.name]: e.target.value})
+    }
     render() {
         let contactList = [
                             { 
+                                id: '11111',
                                 name: 'Brajesh jaishwal',
                                 email: 'brajesh.jaishwal@gmail.com',
-                                phone: '9413844898'
+                                phone: '9413844898',
+                                active: true,
                             },
                             { 
+                                id: '12455',
                                 name: 'Shakun jaiswal',
                                 email: 'shakun.jaiswal@gmail.com',
-                                phone: '7665432898'
+                                phone: '7665432898',
+                                active: true,
                             },
                             { 
+                                id: '112333',
                                 name: 'Yesha jaiswal',
                                 email: 'yesha.jaiswal@gmail.com',
-                                phone: '12345678'
+                                phone: '12345678',
+                                active: false,
                             }
                         ]
         const options = [
@@ -61,7 +82,7 @@ export default class ContactContainerComponent extends Component {
                     </Grid>            
                     <List>
                         {
-                            contactList.map(c => <ContactComponent key={c.email} contact={c} />)
+                            contactList.map(c => <ContactComponent key={c.email} contact={c} {...this.props}/>)
                         }
                     </List>
                 </Segment>
@@ -69,8 +90,9 @@ export default class ContactContainerComponent extends Component {
                     <Pagination
                         activePage={this.state.activePage}
                         onPageChange={this.handlePaginationChange}
-                        totalPages={5}
+                        totalPages={this.state.totalPages}
                     />
+                    <Input name='pagesize' placeholder='pagesize' onChange={this.onChangeHandler}/>
                 </Segment>
             </div>
         )

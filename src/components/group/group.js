@@ -2,25 +2,36 @@ import React, { Component } from 'react'
 import { List, Card, Grid, Button, Label } from 'semantic-ui-react';
 
 class GroupComponent extends Component {
-    
+    onEdit = event => {
+        event.preventDefault()
+        this.props.history.push('/editgroup')
+    }
+    onDelete = event => {
+        event.preventDefault()
+    }
     render() {
+        let { id, name, active, total } = this.props.group
         return (
-            <List.Item key={this.props.group} >
+            <List.Item key={id} >
                 <Card fluid>
                     <Card.Content>
                         <Grid columns={2} >
                             <Grid.Row>
                                 <Grid.Column width='11'>
                                     <div>
-                                        {this.props.group}
-                                        <Label circular style={{marginLeft:'1em'}} >3</Label>
-                                        <Label circular style={{marginLeft:'1em'}}>Active</Label>
+                                        {name}
+                                        <Label circular style={{marginLeft:'1em'}} >{total}</Label>
+                                        <Label circular style={{marginLeft:'1em'}}>
+                                            { active ? 'Active' : 'Inactive' }
+                                        </Label>
                                     </div>
                                 </Grid.Column>
                                 <Grid.Column width='5' >
                                     <div>
-                                        <Button icon='edit' size='tiny' circular ></Button>
-                                        <Button icon='trash' size='tiny' circular color='red'></Button>
+                                        <Button icon='edit' size='tiny' circular 
+                                            onClick={this.onEdit}/>
+                                        <Button icon='trash' size='tiny' circular color='red' 
+                                            onClick={this.onDelete} />
                                     </div>
                                 </Grid.Column>
                             </Grid.Row>

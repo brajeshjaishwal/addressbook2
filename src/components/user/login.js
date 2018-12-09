@@ -41,12 +41,11 @@ class LoginComponent extends Component {
         console.log(token)
         if(token && token !== null && token !== undefined && token !== 'undefined') {
             this.setState({open: false})       
-            this.props.history.push('/Family')
+            this.props.history.push('/dashboard')
         }
     }
 
     render() {
-        let registered = this.props.registered || false
 
         return (
             <Modal size='mini' open={this.state.open} closeOnEscape={false} closeOnDimmerClick={false}>
@@ -58,7 +57,6 @@ class LoginComponent extends Component {
                         icon='key' iconPosition='left' style={{marginTop: '0.5em'}}
                         onChange={this.onChangeHandler} />
                     { this.props.error && <span style={{color:'red'}}>{this.props.error}</span>}
-                    { registered && <span style={{color:'green'}}>Now you are registered, please login to proceed.</span>}
                     <Divider></Divider>
                     <Button name='login' primary fluid size='small'
                         onClick = {this.onSubmitHandler}

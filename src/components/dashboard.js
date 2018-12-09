@@ -5,13 +5,14 @@ import ContactContainerComponent from './contact/contactContainer';
 
 class Dashboard extends Component {
     render() {
+        console.log('in dashboard', this.props.history)
         return (
             <Grid stretched>
                 <Grid.Column width={6}>
-                    <GroupContainerComponent/>
+                    <GroupContainerComponent {...this.props}/>
                 </Grid.Column>
                 <Grid.Column width={10}>
-                    <ContactContainerComponent/>
+                    <ContactContainerComponent {...this.props}/>
                 </Grid.Column>
             </Grid>
         )
