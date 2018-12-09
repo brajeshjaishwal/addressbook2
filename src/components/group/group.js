@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, Card, Grid, Button} from 'semantic-ui-react';
+import { List, Card, Grid, Button, Label } from 'semantic-ui-react';
 
 class GroupComponent extends Component {
     
@@ -11,7 +11,10 @@ class GroupComponent extends Component {
                         <Grid columns={2} >
                             <Grid.Row>
                                 <Grid.Column width='13'>
-                                    <div>{this.props.group}</div>
+                                    <div>
+                                        {this.props.group}
+                                        <Label circular style={{marginLeft:'1em'}}>3</Label>
+                                    </div>
                                 </Grid.Column>
                                 <Grid.Column width='3' >
                                     <div>

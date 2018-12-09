@@ -15,9 +15,9 @@ export default function GroupContainerComponent(props) {
                         </Header>
                     </Grid.Column>
                     <Grid.Column >
-                        <Input type='text' placeholder='Search group ...' action>
+                        <Input type='text' placeholder='Add new group' >
                             <input />
-                            <Button icon='search'></Button>
+                            <Button icon='add' size='tiny'></Button>
                         </Input>
                     </Grid.Column>
                     <Grid.Column >
