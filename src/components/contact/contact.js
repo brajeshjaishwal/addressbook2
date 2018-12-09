@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, Card, Button, Grid, Label, Image } from 'semantic-ui-react';
+import { List, Card, Button, Grid, Label } from 'semantic-ui-react';
 
 class ContactComponent extends Component {
     onEdit = event => {

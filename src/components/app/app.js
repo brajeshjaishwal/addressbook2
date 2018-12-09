@@ -30,9 +30,10 @@ class App extends Component {
                 <Route exact path="/Login" component={login}/>
                 <Route exact path="/Register" component={register}/>
                 <Route exact path="/dashboard" component={Dashboard}/>
+                <Route exact path="/dashboard/:group" component={Dashboard}/>
                 <Route exact path="/editgroup" component={EditGroupComponent}/>
                 <Route exact path="/editcontact" component={EditContactComponent}/>
-                <PrivateRoute path="/Family" />
+                <PrivateRoute path="/dashboard" />
               </Switch>
             </Container>
           </BrowserRouter>

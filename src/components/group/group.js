@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import { List, Card, Grid, Button, Label } from 'semantic-ui-react';
 
 class GroupComponent extends Component {
@@ -11,15 +12,16 @@ class GroupComponent extends Component {
     }
     render() {
         let { id, name, active, total } = this.props.group
+        let selectedGroup = this.props.match.params.group || 'All Contacts'
         return (
-            <List.Item key={id} className='active'>
-                <Card fluid>
+            <List.Item key={id} >
+                <Card fluid color={selectedGroup === name ? 'red' : 'grey'} >
                     <Card.Content>
-                        <Grid columns={2} >
-                            <Grid.Row>
+                        <Grid columns={2}>
+                            <Grid.Row >
                                 <Grid.Column width='11'>
-                                    <div>
-                                        {name}
+                                    <div >
+                                        <Link to={`/dashboard/${name}`}>{name}</Link>
                                         <Label circular style={{marginLeft:'1em'}} >{total}</Label>
                                         <Label circular style={{marginLeft:'1em'}}>
                                             { active ? 'Active' : 'Inactive' }

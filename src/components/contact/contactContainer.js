@@ -27,6 +27,7 @@ export default class ContactContainerComponent extends Component {
         this.setState({[e.target.name]: e.target.value})
     }
     render() {
+        let selectedGroup = this.props.match.params.group || 'All Contacts'
         let contactList = [
                             { 
                                 id: '11111',
@@ -62,7 +63,7 @@ export default class ContactContainerComponent extends Component {
                             <Grid.Column width={4}> 
                                 <Header color='yellow' >
                                     <Icon name='address card' />
-                                    <Header.Content>Contacts</Header.Content>
+                                    <Header.Content>{selectedGroup}</Header.Content>
                                 </Header>
 
                             </Grid.Column>
@@ -80,7 +81,7 @@ export default class ContactContainerComponent extends Component {
                                 </Input>
                             </Grid.Column>
                     </Grid>            
-                    <List animated>
+                    <List selection>
                         {
                             contactList.map(c => <ContactComponent key={c.email} contact={c} {...this.props}/>)
                         }

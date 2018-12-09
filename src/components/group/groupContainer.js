@@ -11,10 +11,9 @@ export default class GroupContainerComponent extends Component {
     onSearchChange = () => {
         
     }
-
     render () {
         let groupList = [
-                            { id:'0000', name: 'All', active: true, total: 6 }, 
+                            { id:'0000', name: 'All Contacts', active: true, total: 10 }, 
                             { id:'1111', name: 'Friends', active: true, total: 2 }, 
                             { id:'2222', name: 'Project', active: true, total: 5 },
                             { id:'3333', name: 'Work', active: false, total: 3 },
@@ -40,9 +39,12 @@ export default class GroupContainerComponent extends Component {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                <List animated>
+                <List selection>
                     {
-                        groupList.map(g => <GroupComponent key={g.id} group={g} {...this.props}/>)
+                        groupList.map(g => <GroupComponent  name={g.name}
+                                                            key={g.id} 
+                                                            group={g}
+                                                            {...this.props}/>)
                     }
                 </List>
             </Segment>
