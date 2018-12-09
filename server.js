@@ -33,11 +33,13 @@ app.use(morgon("dev"))
 app.use((req, res, next) => auth.authenticate(req, res, next))
 
 if(NODE_ENV === 'production') {
-  //app.use(express.static('build'))
+  app.use(express.static('build'))
 
-  //app.get('*', (req, res) => {
-  //  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-  //})
+  app.get('*', (req, res) => {
+    const tempPath = path.resolve(__dirname, 'build', 'index.html')
+    console.log('index.html path', tempPath)
+    res.sendFile(tempPath);
+  })
 }
 
 //welcome route
