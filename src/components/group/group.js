@@ -12,7 +12,7 @@ class GroupComponent extends Component {
     render() {
         let { id, name, active, total } = this.props.group
         return (
-            <List.Item key={id} >
+            <List.Item key={id} className='active'>
                 <Card fluid>
                     <Card.Content>
                         <Grid columns={2} >
@@ -28,9 +28,9 @@ class GroupComponent extends Component {
                                 </Grid.Column>
                                 <Grid.Column width='5' >
                                     <div>
-                                        <Button icon='edit' size='tiny' circular 
+                                        <Button icon='edit outline' size='tiny' circular
                                             onClick={this.onEdit}/>
-                                        <Button icon='trash' size='tiny' circular color='red' 
+                                        <Button icon='delete' size='tiny' circular color='yellow' 
                                             onClick={this.onDelete} />
                                     </div>
                                 </Grid.Column>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, Card, Button, Grid, Label } from 'semantic-ui-react';
+import { List, Card, Button, Grid, Label, Image } from 'semantic-ui-react';
 
 class ContactComponent extends Component {
     onEdit = event => {
@@ -30,7 +30,7 @@ class ContactComponent extends Component {
                                     <div>
                                         <Button icon='edit' size='tiny' circular 
                                             onClick={this.onEdit} />
-                                        <Button icon='trash' size='tiny' circular color='red'
+                                        <Button icon='delete' size='tiny' circular color='yellow'
                                             onClick={this.onDelete} />
                                     </div>
                                 </Grid.Column>

@@ -5,7 +5,6 @@ import ContactContainerComponent from './contact/contactContainer';
 
 class Dashboard extends Component {
     render() {
-        console.log('in dashboard', this.props.history)
         return (
             <Grid stretched>
                 <Grid.Column width={6}>

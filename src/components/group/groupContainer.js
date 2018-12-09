@@ -25,7 +25,7 @@ export default class GroupContainerComponent extends Component {
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column width={6}> 
-                            <Header color='grey'>
+                            <Header color='yellow'>
                                 <Icon name='group' />
                                 <Header.Content>Groups</Header.Content>
                             </Header>
@@ -40,7 +40,7 @@ export default class GroupContainerComponent extends Component {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                <List>
+                <List animated>
                     {
                         groupList.map(g => <GroupComponent key={g.id} group={g} {...this.props}/>)
                     }

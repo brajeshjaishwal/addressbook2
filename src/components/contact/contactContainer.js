@@ -60,7 +60,7 @@ export default class ContactContainerComponent extends Component {
                 <Segment>
                     <Grid >
                             <Grid.Column width={4}> 
-                                <Header color='grey' >
+                                <Header color='yellow' >
                                     <Icon name='address card' />
                                     <Header.Content>Contacts</Header.Content>
                                 </Header>
@@ -80,7 +80,7 @@ export default class ContactContainerComponent extends Component {
                                 </Input>
                             </Grid.Column>
                     </Grid>            
-                    <List>
+                    <List animated>
                         {
                             contactList.map(c => <ContactComponent key={c.email} contact={c} {...this.props}/>)
                         }
