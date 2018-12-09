@@ -6,15 +6,13 @@ import ContactContainerComponent from './contact/contactContainer';
 class Dashboard extends Component {
     render() {
         return (
-            <Grid columns={2} divided>
-                <Grid.Row stretched>
-                    <Grid.Column >
-                        <GroupContainerComponent/>
-                    </Grid.Column>
-                    <Grid.Column >
-                        <ContactContainerComponent/>
-                    </Grid.Column>
-                </Grid.Row>
+            <Grid stretched>
+                <Grid.Column width={6}>
+                    <GroupContainerComponent/>
+                </Grid.Column>
+                <Grid.Column width={10}>
+                    <ContactContainerComponent/>
+                </Grid.Column>
             </Grid>
         )
     }

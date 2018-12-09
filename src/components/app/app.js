@@ -16,6 +16,7 @@ class App extends Component {
               <div className='ui four item menu'>
                 <Header className="item" color='orange' textAlign='left'>CONTACT BOOK</Header>
                 <Button basic primary icon='plus' size='small' circular content='Add Contact' ></Button>
+                <Button basic primary icon='lock' size='small' circular content='Logout' ></Button>
               </div>
               <Switch>
                 <Route exact path="/" component={login}/>

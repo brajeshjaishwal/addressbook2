@@ -17,7 +17,7 @@ export default function GroupContainerComponent(props) {
                     <Grid.Column >
                         <Input type='text' placeholder='Add new group' >
                             <input />
-                            <Button icon='add' size='tiny'></Button>
+                            <Button icon='add' size='tiny' type='submit'></Button>
                         </Input>
                     </Grid.Column>
                     <Grid.Column >

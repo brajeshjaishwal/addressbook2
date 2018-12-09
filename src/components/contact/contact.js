@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, Card, Button, Grid } from 'semantic-ui-react';
+import { List, Card, Button, Grid, Label } from 'semantic-ui-react';
 
 class ContactComponent extends Component {
     
@@ -8,7 +8,10 @@ class ContactComponent extends Component {
             <List.Item key={this.props.contact} >
                 <Card fluid>
                     <Card.Content>
-                        <Card.Header >{this.props.contact.name}</Card.Header>
+                        <Card.Header >
+                            {this.props.contact.name}
+                            <Label circular style={{marginLeft:'1em'}}>Active</Label>
+                        </Card.Header>
                         <Grid columns={2} >
                             <Grid.Row>
                                 <Grid.Column width='13'>
