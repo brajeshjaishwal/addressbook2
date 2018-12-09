@@ -40,7 +40,7 @@ export default class ContactContainerComponent extends Component {
                     <Grid >
                             <Grid.Column width={4}> 
                                 <Header color='grey' >
-                                    <Icon name='address book' />
+                                    <Icon name='address card' />
                                     <Header.Content>Contacts</Header.Content>
                                 </Header>
 

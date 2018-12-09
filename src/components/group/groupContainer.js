@@ -6,9 +6,9 @@ export default function GroupContainerComponent(props) {
     let groupList = ['friends', 'Project', 'Work']
     return (
         <Segment>
-            <Grid columns={3}>
+            <Grid columns={2}>
                 <Grid.Row>
-                    <Grid.Column > 
+                    <Grid.Column width={6}> 
                         <Header color='grey'>
                             <Icon name='group' />
                             <Header.Content>Groups</Header.Content>
