@@ -33,7 +33,7 @@ app.use(morgon("dev"))
 app.use((req, res, next) => auth.authenticate(req, res, next))
 
 if(NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'build'))
+  app.use(express.static(path.join(__dirname, 'build')))
 
   app.get('*', (req, res) => {
     const tempPath = path.resolve(__dirname, 'build', 'index.html')
