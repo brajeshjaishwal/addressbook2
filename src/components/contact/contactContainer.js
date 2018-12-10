@@ -32,6 +32,7 @@ export default class ContactContainerComponent extends Component {
                             { 
                                 id: '11111',
                                 name: 'Brajesh jaishwal',
+                                job: 'Senior software developer',
                                 email: 'brajesh.jaishwal@gmail.com',
                                 phone: '9413844898',
                                 active: true,
@@ -39,6 +40,7 @@ export default class ContactContainerComponent extends Component {
                             { 
                                 id: '12455',
                                 name: 'Shakun jaiswal',
+                                job: 'Project leader',
                                 email: 'shakun.jaiswal@gmail.com',
                                 phone: '7665432898',
                                 active: true,
@@ -46,6 +48,7 @@ export default class ContactContainerComponent extends Component {
                             { 
                                 id: '112333',
                                 name: 'Yesha jaiswal',
+                                job: 'Software developer',
                                 email: 'yesha.jaiswal@gmail.com',
                                 phone: '12345678',
                                 active: false,
@@ -65,19 +68,18 @@ export default class ContactContainerComponent extends Component {
                                     <Icon name='address card' />
                                     <Header.Content>{selectedGroup}</Header.Content>
                                 </Header>
-
                             </Grid.Column>
                             <Grid.Column width={8}>
                                 <Input type='text' placeholder='Search contact ...'>
                                     <input />
                                     <Select compact options={options} defaultValue='name' />
-                                    <Button icon='search'></Button>
+                                    <Button icon='search' compact />
                                 </Input>
                             </Grid.Column>
                             <Grid.Column width={3}>
-                                <Input type='text' placeholder='Search contact ...' action>
+                                <Input >
                                     <Select compact options={options} defaultValue='name' />
-                                    <Button >Sort</Button>
+                                    <Button compact content='Sort'/>
                                 </Input>
                             </Grid.Column>
                     </Grid>            

@@ -5,7 +5,7 @@ import { List, Card, Grid, Button, Label } from 'semantic-ui-react';
 class GroupComponent extends Component {
     onEdit = event => {
         event.preventDefault()
-        this.props.history.push('/editgroup')
+        this.props.history.push(`/editgroup/${this.props.group.id}`)
     }
     onDelete = event => {
         event.preventDefault()
@@ -30,7 +30,7 @@ class GroupComponent extends Component {
                                 </Grid.Column>
                                 <Grid.Column width='5' >
                                     <div>
-                                        <Button icon='edit outline' size='tiny' circular
+                                        <Button icon='pencil' size='tiny' circular
                                             onClick={this.onEdit}/>
                                         <Button icon='delete' size='tiny' circular color='yellow' 
                                             onClick={this.onDelete} />

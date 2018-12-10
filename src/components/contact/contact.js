@@ -5,13 +5,13 @@ class ContactComponent extends Component {
     onEdit = event => {
         event.preventDefault()
         console.log(this.props)
-        this.props.history.push('/editcontact')
+        this.props.history.push(`/editcontact/${this.props.contact.id}`)
     }
     onDelete = event => {
         event.preventDefault()
     }
     render() {
-        let { id, name, email, phone } = this.props.contact
+        let { id, name, email, phone, job } = this.props.contact
         return (
             <List.Item key={id} >
                 <Card fluid>
@@ -23,12 +23,13 @@ class ContactComponent extends Component {
                         <Grid columns={2} >
                             <Grid.Row>
                                 <Grid.Column width='13'>
+                                    <div>{job}</div>
                                     <div>{email}</div>
                                     <div>{phone}</div>
                                 </Grid.Column>
                                 <Grid.Column width='3'>
                                     <div>
-                                        <Button icon='edit' size='tiny' circular 
+                                        <Button icon='pencil' size='tiny' circular 
                                             onClick={this.onEdit} />
                                         <Button icon='delete' size='tiny' circular color='yellow'
                                             onClick={this.onDelete} />
