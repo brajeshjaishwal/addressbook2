@@ -1,6 +1,7 @@
 import globals from '../constants/auth'
 
 let initialState = {
+    domain: '',
     user: '',
     token: '',
     loading: false,
@@ -14,10 +15,12 @@ const authReducer = (state = initialState, action) => {
         case globals.LOGIN:
         case globals.LOGIN_FAILED:
         case globals.LOGIN_SUCCEDED:
-            return { ...state, ...action.payload }
         case globals.REGISTER:
         case globals.REGISTER_FAILED:
         case globals.REGISTER_SUCCEDED:
+        case globals.FETCHDOMAIN:
+        case globals.FETCHDOMAIN_SUCCEDED:
+        case globals.FETCHDOMAIN_FAILED:
             return { ...state, ...action.payload }
         default:
             return { ...state}

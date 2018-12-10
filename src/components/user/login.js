@@ -2,18 +2,16 @@ import React, {Component} from 'react'
 import {Input, Button, Modal, Divider, Message} from 'semantic-ui-react'
 import {bindActionCreators} from 'redux'
 import { connect } from 'react-redux'
-import { loginUserAction, registerUserAction } from '../../actions/auth'
+import { loginUserAction } from '../../actions/auth'
 
 class LoginComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            name: '',
+            email: '',
             password: '',
             open: true,
-            registered: false,
             login: false,
-            register: false,
         }
     }
 
@@ -24,20 +22,14 @@ class LoginComponent extends Component {
     onSubmitHandler = async (event) => {
         console.log(this.state)
         event.preventDefault()
-        if(!this.state.name || !this.state.password)
+        if(!this.state.email || !this.state.password)
         {
             alert('please enter required values.')
             return
         } 
-        let elementName = event.target.name;
-        this.setState({[elementName]: true})
-        if(event.target.name === 'login') {
-            await this.props.loginUser({name: this.state.name, password: this.state.password})
-        }else {
-            await this.props.registerUser({name: this.state.name, password: this.state.password})
-        }
+        let { email, password } = this.state
+        await this.props.loginUser({email, password})
         let token = sessionStorage.getItem('token')
-        this.setState({[elementName]: false})
         console.log(token)
         if(token && token !== null && token !== undefined && token !== 'undefined') {
             this.setState({open: false})       
@@ -52,9 +44,9 @@ class LoginComponent extends Component {
                 <Modal.Header>User Information</Modal.Header>
                 <Modal.Content>
                     <Input name="email" fluid placeholder='Enter your username' style={{marginTop: '0.5em'}}
-                        onChange={this.onChangeHandler} icon='at' iconPosition='left' label='@inmar.com' labelPosition='right'></Input>
+                        onChange={this.onChangeHandler} label={this.props.domain} labelPosition='right'></Input>
                     <Input name="password" type='password' fluid placeholder='Enter your password'
-                        icon='key' iconPosition='left' style={{marginTop: '0.5em'}}
+                        icon='key' style={{marginTop: '0.5em'}}
                         onChange={this.onChangeHandler} />
                     { this.props.error && <span style={{color:'red'}}>{this.props.error}</span>}
                     <Divider></Divider>
@@ -74,13 +66,12 @@ function mapStateToProps(state) {
     return {
         error: state.auth.error,
         loading: state.auth.loading,
-        registered: state.auth.registered,
+        domain: state.auth.domain,
     }
 }
 function mapDispatchToProps(dispatch) {
     return {
         loginUser: bindActionCreators(loginUserAction, dispatch),
-        registerUser: bindActionCreators(registerUserAction, dispatch),
     }
 }
 

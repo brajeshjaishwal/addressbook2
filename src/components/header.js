@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Segment, Grid, Header, Button } from 'semantic-ui-react'
+import { Segment, Grid, Header, Button, Icon } from 'semantic-ui-react'
 import {withRouter} from 'react-router-dom'
 
 class HeaderComponent extends Component {
@@ -10,14 +10,22 @@ class HeaderComponent extends Component {
     }
     onLogout = event => {
         event.preventDefault()
-        //logout
+        sessionStorage.clear()
+        this.props.history.push('/')
     }
     render() {
+        let user = sessionStorage.getItem('name')
         return (
                     <Segment inverted color='yellow'>
                         <Grid>
                             <Grid.Column width={12}>
-                                <Header className="item" color='orange' textAlign='left'>CONTACT BOOK</Header>
+                                <Header as='h2' color='orange'>
+                                    <Icon name='address book' />
+                                    <Header.Content>
+                                        Contact Manager
+                                    <Header.Subheader>{`Hi, ${user}`}</Header.Subheader>
+                                    </Header.Content>
+                                </Header>
                             </Grid.Column>
                             <Grid.Column width='4'>
                                 <Button icon='plus' compact circular content='Add Contact' 

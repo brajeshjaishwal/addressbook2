@@ -3,6 +3,7 @@ import {Input, Button, Modal, Message, Divider} from 'semantic-ui-react'
 import {bindActionCreators} from 'redux'
 import { connect } from 'react-redux'
 import { registerUserAction } from '../../actions/auth';
+import validator from 'validator'
 
 //var strongRegex = new RegExp("^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 const oneCapitalLetter = new RegExp("^(?=.*[A-Z])")
@@ -21,42 +22,61 @@ class RegisterComponent extends Component {
             password: '',
             open: true,
             passwordError: 'length > 8, special character, number, capital letter',
+            emailError: '',
+            phoneError: '',
+            nameError: '',
         }
     }
 
     onChangeHandler = (e) => {
-        this.setState({[e.target.name]: e.target.value})
+        let tempValue = e.target.value
+        this.setState({[e.target.name]: tempValue})
         if(e.target.name === 'password') {
             let error = ''
-            if(!min8Length.test(e.target.value)) {
+            if(!min8Length.test(tempValue)) {
                 error += 'length > 8, '
             }
-            if(!oneSpecialLetter.test(e.target.value)) {
+            if(!oneSpecialLetter.test(tempValue)) {
                 error += 'special character, '
             }
-            if(!oneNumber.test(e.target.value)) {
+            if(!oneNumber.test(tempValue)) {
                 error += 'number, '
             }
-            if(!oneCapitalLetter.test(e.target.value)) {
+            if(!oneCapitalLetter.test(tempValue)) {
                 error += 'capital letter'
             }
             this.setState({passwordError: error})
-        }
+        } else if(e.target.name === 'email') {
+            let tempEmail = tempValue + this.props.domain
+            let error = ''
+            if(tempValue && !validator.isEmail(tempEmail)) {
+                error = 'Email not valid'
+            }
+            this.setState({emailError: error})
+        } else if(e.target.name === 'phone') {
+            let error = ''
+            if(tempValue && (!validator.isNumeric(tempValue) || tempValue.length < 10)) {
+                error = 'phone number not valid'
+            }
+            this.setState({phoneError: error})
+        } 
     }
 
     onSubmitHandler = async (event) => {
         event.preventDefault()
         console.log(this.state.name)
-        if(!this.state.name || !this.state.password || !this.state.phone || !this.state.email)
+        if( this.state.emailError || this.state.passwordError || this.state.phoneError ||
+            !this.state.name || !this.state.password || !this.state.phone || !this.state.email)
         {
-            alert('please enter required values.')
+            alert('please correct all entries.')
             return
         }
         this.setState({open: false})
-        await this.props.registerUser({name: this.state.name, password: this.state.password})
-        let token = sessionStorage.getItem('token')
-        if(token)
-            this.props.history.push('/')
+        let {name, email, phone, password} = this.state
+        await this.props.registerUser({name, email, phone, password,})
+        //let token = sessionStorage.getItem('token')
+        //if(token)
+        //    this.props.history.push('/login')
     }
 
     render() {
@@ -66,16 +86,22 @@ class RegisterComponent extends Component {
                 <Modal.Header>User Information</Modal.Header>
                 <Modal.Content>
                     <Input name="name" fluid placeholder='Enter name' style={{marginTop: '0.5em'}}
-                        onChange={this.onChangeHandler} icon='user' iconPosition='left' ></Input>
-                    <Input name="email" fluid placeholder='Enter username' style={{marginTop: '0.5em'}}
-                        onChange={this.onChangeHandler} icon='at' iconPosition='left' label='@inmar.com' labelPosition='right'></Input>
+                        onChange={this.onChangeHandler} icon='user' ></Input>
+
+                    <Input name="email" fluid placeholder='Enter email' style={{marginTop: '0.5em'}}
+                        onChange={this.onChangeHandler} label = {this.props.domain} labelPosition='right'></Input>
+                    { this.state.emailError && <span style={{color:'red'}}>{this.state.emailError}</span>}
+
                     <Input name="phone" fluid placeholder='Enter phone number' style={{marginTop: '0.5em'}}
-                        onChange={this.onChangeHandler} icon='phone' iconPosition='left' ></Input>
+                        onChange={this.onChangeHandler} icon='phone' ></Input>
+                    { this.state.phoneError && <span style={{color:'red'}}>{this.state.phoneError}</span>}
+
                     <Input name="password" type='password' fluid placeholder='Enter password'
-                        icon='key' iconPosition='left' style={{marginTop: '0.5em'}}
+                        icon='key' style={{marginTop: '0.5em'}}
                         onChange={this.onChangeHandler} />
-                    { this.props.error && <span style={{color:'red'}}>{this.props.error}</span>}
                     { this.state.passwordError && <span style={{color:'red'}}>{this.state.passwordError}</span>}
+
+                    { this.props.error && <span style={{color:'red'}}>{this.props.error}</span>}
                     { registered && <span style={{color:'green'}}>Now you are registered, please <a href='/login'>login</a> to proceed.</span>}
                     <Divider></Divider>
                     <Button name='register' primary fluid
@@ -90,10 +116,18 @@ class RegisterComponent extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        error: state.auth.error,
+        loading: state.auth.loading,
+        domain: state.auth.domain,
+        registered: state.auth.registered,
+    }
+}
 function mapDispatchToProps(dispatch) {
     return {
         registerUser: bindActionCreators(registerUserAction, dispatch),
     }
 }
 
-export default connect(null, mapDispatchToProps)(RegisterComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterComponent)

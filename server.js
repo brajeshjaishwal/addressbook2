@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 const morgon = require('morgan')
 const auth = require('./services/auth')
 const contact = require('./services/contact')
-const { PORT, NODE_ENV } = require('./config/config').Initialize()
+const { PORT, NODE_ENV, DOMAIN } = require('./config/config').Initialize()
 
 let app = express()
 
@@ -44,6 +44,9 @@ if(NODE_ENV === 'production') {
 
 //welcome route
 app.get('/welcome', (req, res) => auth.welcome(req, res))
+
+//welcome route
+app.get('/domain', (req, res) => res.send({domain: DOMAIN}))
 
 //register route
 app.post('/users/register', (req, res) => auth.register(req, res))
