@@ -38,7 +38,6 @@ class LoginComponent extends Component {
     }
 
     render() {
-        console.log('in login page', this.props)
         return (
             <Modal size='mini' open={this.state.open} closeOnEscape={false} closeOnDimmerClick={false}>
                 <Modal.Header>User Information</Modal.Header>

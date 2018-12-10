@@ -40,17 +40,10 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  console.log('fetched domain', state)
-  return {
-    domain: state.domain
-  }
-}
-
 function mapDispatchToProps(dispatch) {
   return {
     fetchDomain: bindActionCreators(fetchDomainAction, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);
