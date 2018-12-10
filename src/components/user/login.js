@@ -38,13 +38,13 @@ class LoginComponent extends Component {
     }
 
     render() {
-
+        console.log(process.env)
         return (
             <Modal size='mini' open={this.state.open} closeOnEscape={false} closeOnDimmerClick={false}>
                 <Modal.Header>User Information</Modal.Header>
                 <Modal.Content>
                     <Input name="email" fluid placeholder='Enter your username' style={{marginTop: '0.5em'}}
-                        onChange={this.onChangeHandler} label={this.props.domain} labelPosition='right'></Input>
+                        onChange={this.onChangeHandler} label={process.env.DOMAIN} labelPosition='right'></Input>
                     <Input name="password" type='password' fluid placeholder='Enter your password'
                         icon='key' style={{marginTop: '0.5em'}}
                         onChange={this.onChangeHandler} />

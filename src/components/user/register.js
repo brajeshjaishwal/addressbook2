@@ -74,9 +74,6 @@ class RegisterComponent extends Component {
         this.setState({open: false})
         let {name, email, phone, password} = this.state
         await this.props.registerUser({name, email, phone, password,})
-        //let token = sessionStorage.getItem('token')
-        //if(token)
-        //    this.props.history.push('/login')
     }
 
     render() {
@@ -89,7 +86,7 @@ class RegisterComponent extends Component {
                         onChange={this.onChangeHandler} icon='user' ></Input>
 
                     <Input name="email" fluid placeholder='Enter email' style={{marginTop: '0.5em'}}
-                        onChange={this.onChangeHandler} label = {this.props.domain} labelPosition='right'></Input>
+                        onChange={this.onChangeHandler} label = {process.env.DOMAIN} labelPosition='right'></Input>
                     { this.state.emailError && <span style={{color:'red'}}>{this.state.emailError}</span>}
 
                     <Input name="phone" fluid placeholder='Enter phone number' style={{marginTop: '0.5em'}}
