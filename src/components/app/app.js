@@ -41,7 +41,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  //console.log('fetched domain', state)
+  console.log('fetched domain', state)
   return {
     domain: state.domain
   }
