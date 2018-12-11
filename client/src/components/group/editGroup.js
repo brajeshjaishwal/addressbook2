@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Input, Button, Modal, Divider, Checkbox, Header } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { addGroupAction } from '../../actions/group';
+import { addGroupAction, editGroupAction } from '../../actions/group';
 
 class EditGroupComponent extends Component {
     constructor(props){
@@ -60,6 +60,7 @@ class EditGroupComponent extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         addGroup: bindActionCreators(addGroupAction, dispatch),
+        editGroup: bindActionCreators(editGroupAction, dispatch)
     }
 }
 

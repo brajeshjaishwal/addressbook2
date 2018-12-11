@@ -16,7 +16,7 @@ describe("check server",function(){
                 expect(res.status).to.be.equal(200)
                 done()
             });
-    }),
+    });
     // #1 should return welcome message
     it("should return error",function(done){
         // calling home page api

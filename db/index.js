@@ -58,7 +58,6 @@ const Register = async function({name, email, phone, password}) {
         throw Error
     }
 }
-
 const Login = async function({email, password}) {
     try {
         const user = await User.findOne({email});
@@ -75,7 +74,6 @@ const Login = async function({email, password}) {
         throw Error
     }
 }
-
 const GetContacts = async function({user, group}) {
     try{
         const contacts = (group === null || group === 'undefined' || group === 'all') ? 
@@ -89,7 +87,7 @@ const GetContacts = async function({user, group}) {
     }
 }
 
-const GetContact = async function(id) {
+const GetContact = async function({id}) {
     try{
         const contact = await Contact.findById(id)
         return contact
@@ -115,7 +113,7 @@ const EditContact = async function(req) {
     }
 }
 
-const DeleteContact = async function(id) {
+const DeleteContact = async function({id}) {
     try {
         const temp = await Contact.findByIdAndRemove({id})
         return temp
@@ -133,9 +131,22 @@ const AddGroup = async function({user, name }) {
     }
 }
 
-const EditGroup = async function(id, name) {
+//to change the active field of a group
+const ActivateGroup = async function({id, active}) {
     try {
-        const temp = await Group.findByIdAndUpdate(id, name)
+        let temp = await Group.findOneAndUpdate(id, { active })
+        //todo change active fields of all the associated contacts
+        await Contact.updateMany({group: id}, {active})
+        return temp
+    }catch(Error) {
+        throw Error
+    }
+}
+
+//just to change the name of a group
+const EditGroup = async function({id, name}) {
+    try {
+        const temp = await Group.findOneAndUpdate(id, { name })
         return temp
     }catch(Error) {
         throw Error
@@ -144,8 +155,8 @@ const EditGroup = async function(id, name) {
 
 const DeleteGroup = async function({id}) {
     try {
-        const temp = await Group.findByIdAndRemove({id})
-        return { group: temp}
+        const temp = await Group.findByIdAndRemove(id)
+        return temp
     }catch(Error) {
         throw Error
     }
@@ -163,5 +174,5 @@ const GetGroups = async function({user, groupid}) {
 module.exports = {  Connect, Login, Register, 
                     GetContact, GetContacts,
                     AddContact, EditContact, DeleteContact,
-                    GetGroups, AddGroup, EditGroup, DeleteGroup,
+                    GetGroups, AddGroup, EditGroup, DeleteGroup, ActivateGroup,
                     GetCurrentUser }

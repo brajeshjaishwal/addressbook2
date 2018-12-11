@@ -3,7 +3,8 @@ import { proxy, handleError, getConfig } from '../api/api'
 
 const { AddGroup, AddGroup_Success, AddGroup_Failure,
         FetchGroup, FetchGroup_Success, FetchGroup_Failure,
-        RemoveGroup, RemoveGroup_Success, RemoveGroup_Failure } = constants
+        RemoveGroup, RemoveGroup_Success, RemoveGroup_Failure,
+        EditGroup, EditGroup_Success, EditGroup_Failure } = constants
 
 export const addGroupAction = function ({ name }) {
     const config = getConfig();
@@ -51,6 +52,30 @@ export const deleteGroupAction = function ({ groupid }) {
     function deleteGroupStarted() { return { type: RemoveGroup, payload: {error: '', success: false, loading: true} } }
     function deleteGroupSucceded(group) { return { type: RemoveGroup_Success, payload: { group, loading: false, success: true } } }
     function deleteGroupFailed(error) { return { type: RemoveGroup_Failure, payload: { error, loading: false} }}
+}
+
+export const editGroupAction = function ({groupid, name, active}) {
+    const config = getConfig();
+    const request = proxy.put(`contacts/group/${groupid}`, { name, active }, config)
+    return async (dispatch) => {
+        dispatch(editGroupStarted())
+        try{
+            let resp = await request
+            let { group, message } = await resp.data
+            console.log('edit group action', group)
+            if(group === null) {
+                dispatch(editGroupFailed(message))    
+            } else {
+                dispatch(editGroupSucceded(group))
+            }
+        }catch(error) {
+            let errorMessage = handleError(error)
+            dispatch(editGroupFailed(errorMessage))
+        }
+    }
+    function editGroupStarted() { return { type: EditGroup, payload: {error: '', success: false, loading: true} } }
+    function editGroupSucceded(group) { return { type: EditGroup_Success, payload: { group, loading: false, success: true } } }
+    function editGroupFailed(error) { return { type: EditGroup_Failure, payload: { error, loading: false} }}
 }
 
 export const fetchAllGroupsAction = function () {

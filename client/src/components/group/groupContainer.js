@@ -42,14 +42,14 @@ class GroupContainerComponent extends Component {
             <Segment>
                 <Grid columns={2}>
                     <Grid.Row>
-                        <Grid.Column width={6}> 
+                        <Grid.Column > 
                             <Header color='yellow'>
                                 <Icon name='group' />
                                 <Header.Content>Groups</Header.Content>
                             </Header>
                         </Grid.Column>
-                        <Grid.Column >
-                            <Input
+                        <Grid.Column align='right'>
+                            <Input fluid 
                                 name='newgroup'
                                 label={<Button icon='add' loading={this.props.loading} compact onClick={this.onAddGroup}/>}
                                 labelPosition='right'
@@ -61,7 +61,7 @@ class GroupContainerComponent extends Component {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                <List selection>
+                <List >
                     {
                         groups.map(g => 
                             <GroupComponent name={g.name} key={g.name} group={g} {...this.props}/>)

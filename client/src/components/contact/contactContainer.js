@@ -67,26 +67,26 @@ export default class ContactContainerComponent extends Component {
         return (
             <div>
                 <Segment>
-                    <Grid >
-                            <Grid.Column width={4}> 
-                                <Header color='yellow' >
-                                    <Icon name='address card' />
-                                    <Header.Content>{selectedGroup}</Header.Content>
-                                </Header>
-                            </Grid.Column>
-                            <Grid.Column width={8}>
-                                <Input type='text' placeholder='Search contact ...'>
-                                    <input />
-                                    <Select compact options={options} defaultValue='name' />
-                                    <Button icon='search' compact />
-                                </Input>
-                            </Grid.Column>
-                            <Grid.Column width={3}>
-                                <Input >
-                                    <Select compact options={options} defaultValue='name' />
-                                    <Button compact content='Sort'/>
-                                </Input>
-                            </Grid.Column>
+                    <Grid columns={3}>
+                        <Grid.Column width={4}>
+                            <Header color='yellow' >
+                                <Icon name='address card' />
+                                <Header.Content>{selectedGroup}</Header.Content>
+                            </Header>
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                            <Input type='text' placeholder='Search contact ...'>
+                                <input />
+                                <Select compact options={options} defaultValue='name' />
+                                <Button icon='search' compact />
+                            </Input>
+                        </Grid.Column>
+                        <Grid.Column width={3} align='right'>
+                            <Input >
+                                <Select compact options={options} defaultValue='name' />
+                                <Button compact icon='sort'/>
+                            </Input>
+                        </Grid.Column>
                     </Grid>            
                     <List selection>
                         {

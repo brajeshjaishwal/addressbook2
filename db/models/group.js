@@ -15,7 +15,7 @@ const ContactGroupSchema = new Schema({
         default: 'None'
     },
     photo: String,                  //photo url
-    user: Schema.Types.ObjectId //which user this group belongs to
+    user: Schema.Types.ObjectId, //which user this group belongs to
 })
 
 module.exports = Mongoose.model('ContactGroup', ContactGroupSchema)
