@@ -29,7 +29,7 @@ app.use(morgon("combined"))
 
 app.use((req, res, next) => auth.authenticate(req, res, next))
 
-if(NODE_ENV === 'DEV') {
+if(NODE_ENV === 'production') {
   app.use(express.static('client/build'))
 
   app.get('*', (req, res, next) => {
