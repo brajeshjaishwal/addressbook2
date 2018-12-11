@@ -78,12 +78,12 @@ const Login = async function({email, password}) {
 
 const GetContacts = async function({user, group}) {
     try{
-        const contacts = (group === null || group === 'all') ? 
+        const contacts = (group === null || group === 'undefined' || group === 'all') ? 
                             //find all contacts from the user
                             await Contact.find({user}) : 
                             //find all contacts from the user and from particular group
                             await Contact.find({user, group})
-        return { contacts }
+        return contacts
     }catch(Error) {
         throw Error
     }
@@ -92,7 +92,7 @@ const GetContacts = async function({user, group}) {
 const GetContact = async function(id) {
     try{
         const contact = await Contact.findById(id)
-        return { contact }
+        return contact
     }catch(Error) {
         throw Error
     }
@@ -100,7 +100,7 @@ const GetContact = async function(id) {
 const AddContact = async function({user, name, email, phone, group, starred }) {
     try{
         const temp = await new Contact({ user, name, email, phone, group, starred }).save();
-        return { contact: temp }
+        return temp
     }catch(Error) {
         throw Error
     }
@@ -109,7 +109,7 @@ const AddContact = async function({user, name, email, phone, group, starred }) {
 const EditContact = async function(req) {
     try {
         const temp = await Contact.findByIdAndUpdate(req.params.contactid, req.body)
-        return { contact: temp }
+        return temp
     }catch(Error) {
         throw Error
     }
@@ -118,7 +118,7 @@ const EditContact = async function(req) {
 const DeleteContact = async function(id) {
     try {
         const temp = await Contact.findByIdAndRemove({id})
-        return { contact: temp}
+        return temp
     }catch(Error) {
         throw Error
     }
@@ -126,8 +126,8 @@ const DeleteContact = async function(id) {
 
 const AddGroup = async function({user, name }) {
     try{
-        const temp = await new Group({ user, name }).save();
-        return { group: temp }
+        let temp = await new Group({ user, name }).save();
+        return temp
     }catch(Error) {
         throw Error
     }
@@ -136,7 +136,7 @@ const AddGroup = async function({user, name }) {
 const EditGroup = async function(id, name) {
     try {
         const temp = await Group.findByIdAndUpdate(id, name)
-        return { group: temp }
+        return temp
     }catch(Error) {
         throw Error
     }
@@ -151,17 +151,17 @@ const DeleteGroup = async function(id) {
     }
 }
 
-const GetGroups = async function(user) {
+const GetGroups = async function({user, groupid}) {
     try {
         const temp = await Group.find({user})
-        return { groups: temp}
+        return temp
     }catch(Error) {
         throw Error
     }
 }
 
 module.exports = {  Connect, Login, Register, 
-                    GetContact, GetContacts, 
+                    GetContact, GetContacts,
                     AddContact, EditContact, DeleteContact,
                     GetGroups, AddGroup, EditGroup, DeleteGroup,
                     GetCurrentUser }

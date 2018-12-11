@@ -3,12 +3,16 @@ import GroupComponent from './group';
 import { Grid, List, Segment, Header, Input, Icon, Button } from 'semantic-ui-react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import { addGroupAction } from '../../actions/group'
+import { addGroupAction, fetchAllGroupsAction } from '../../actions/group'
 
 class GroupContainerComponent extends Component {
 
     state = {
         newgroup:''
+    }
+    
+    async componentDidMount() {
+        await this.props.fetchAllGroups()
     }
 
     onSearchChange = () => {
@@ -25,13 +29,15 @@ class GroupContainerComponent extends Component {
     }
 
     render () {
-        let groupList = [
-                            { id:'0000', name: 'All Contacts', active: true, total: 10 }, 
-                            { id:'1111', name: 'Friends', active: true, total: 2 }, 
-                            { id:'2222', name: 'Project', active: true, total: 5 },
-                            { id:'3333', name: 'Work', active: false, total: 3 },
-                        ]
-    
+        let groups = []
+        let allcontacts = { id: '00000', name: 'All Contacts', total: 0, active: true }
+        groups.push(allcontacts)
+        this.props.groups.forEach(g => { 
+            g.total = g.contacts.length
+            allcontacts.total += g.total
+            groups.push(g)
+        })
+
         return (
             <Segment>
                 <Grid columns={2}>
@@ -45,7 +51,7 @@ class GroupContainerComponent extends Component {
                         <Grid.Column >
                             <Input
                                 name='newgroup'
-                                label={<Button icon='add' compact onClick={this.onAddGroup}/>}
+                                label={<Button icon='add' loading={this.props.loading} compact onClick={this.onAddGroup}/>}
                                 labelPosition='right'
                                 value={this.state.newgroup}
                                 placeholder='Add new group' 
@@ -57,10 +63,8 @@ class GroupContainerComponent extends Component {
                 </Grid>
                 <List selection>
                     {
-                        groupList.map(g => <GroupComponent  name={g.name}
-                                                            key={g.id} 
-                                                            group={g}
-                                                            {...this.props}/>)
+                        groups.map(g => 
+                            <GroupComponent name={g.name} key={g.name} group={g} {...this.props}/>)
                     }
                 </List>
             </Segment>
@@ -69,14 +73,18 @@ class GroupContainerComponent extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log('group container- mapstatetoprops', state)
     return {
-        groups: state.groups
+        groups: state.group.groups,
+        loading: state.group.loading,
+        error: state.group.error
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        addGroup: bindActionCreators(addGroupAction, dispatch)
+        addGroup: bindActionCreators(addGroupAction, dispatch),
+        fetchAllGroups: bindActionCreators(fetchAllGroupsAction, dispatch)
     }
 }
 

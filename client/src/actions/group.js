@@ -1,23 +1,18 @@
 import constants from '../constants/group'
-import { proxy, handleError } from '../api/api'
+import { proxy, handleError, getConfig } from '../api/api'
 
 const { AddGroup, AddGroup_Success, AddGroup_Failure,
         FetchGroup, FetchGroup_Success, FetchGroup_Failure } = constants
 
-const config = { headers: {
-    'auth': sessionStorage.getItem('token')
-}}
-
 export const addGroupAction = function ({ name }) {
-    const config = { headers: {
-        'auth': sessionStorage.getItem('token')
-    }}
+    const config = getConfig();
     const request = proxy.post('contacts/group/add', { name }, config)
     return async (dispatch) => {
         dispatch(addGroupStarted())
         try{
             let resp = await request
             let { group, message } = await resp.data
+            console.log('add group action', group)
             if(group === null) {
                 dispatch(addGroupFailed(message))    
             } else {
@@ -33,31 +28,26 @@ export const addGroupAction = function ({ name }) {
     function addGroupFailed(error) { return { type: AddGroup_Failure, payload: { error, loading: false} }}
 }
 
-export const fetchGroupsAction = function (parent) {
-    var config = { headers: {
-        'auth': sessionStorage.getItem('token'),
-    }}
+export const fetchAllGroupsAction = function () {
+    var config = getConfig();
     const request = proxy.get(`contacts/group/list`, config)
     return async (dispatch) => {
-        dispatch(fetchGroupsStarted(parent))
+        dispatch(fetchGroupsStarted())
         try{
             let resp = await request
             let result = await resp.data
-            if(result.members === null) {
+            console.log('fetchAllGroupsAction', result)
+            if(result.groups === null) {
                 dispatch(fetchGroupsFailed(result.message))    
             } else {
-                var members = []
-                result.members.forEach(m => {
-                    members.push({ key: m._id || m.id, parent: m.parent || -1, name: m.name, relation: m.relation })
-                })
-                dispatch(fetchGroupsSucceded(members))
+                dispatch(fetchGroupsSucceded(result.groups))
             }
         }catch(error) {
             let errorMessage = handleError(error)
             dispatch(fetchGroupsFailed(errorMessage))
         }
     }
-    function fetchGroupsStarted(key) { return { type: FetchGroup, payload: { key, loading: key, error: '' } } }
-    function fetchGroupsSucceded(groups) { return { type: FetchGroup_Success, payload: { groups, loading: '' } } }
-    function fetchGroupsFailed(error) { return { type: FetchGroup_Failure, payload: { error, loading: ''}}}
+    function fetchGroupsStarted() { return { type: FetchGroup, payload: { loading: true, error: '' } } }
+    function fetchGroupsSucceded(groups) { return { type: FetchGroup_Success, payload: { groups, loading: false } } }
+    function fetchGroupsFailed(error) { return { type: FetchGroup_Failure, payload: { error, loading: false}}}
 }

@@ -1,4 +1,4 @@
-const { AddGroup, GetGroups, GetContacts } = require('../db/index')
+const { AddGroup, GetGroups, GetContacts, EditGroup, DeleteGroup } = require('../db/index')
 
 const getGroupList = async (req, res) => {
     try {
@@ -6,21 +6,27 @@ const getGroupList = async (req, res) => {
         const user = req.user
         if(!user) throw Error("You are not logged in.")
         let groups = await GetGroups({user: user._id})
-        let ret = []
-        for(let g of groups) {
+        let groupsWithContacts = []
+        
+        groups.forEach(g => {
             let tempGroup = {
-                id: g._id,
-                name: g.name,
-                contacts: []
-            }
-            let contacts = GetContacts({user: user._id, group: g._id})
-            tempGroup.contacts.push(contacts)
-            ret.push(tempGroup)
-        }
-        let contacts = await GetContacts({user: user._id, group: groupid})
-        return res.send({ contacts })
+                                id: g._id,
+                                name: g.name,
+                                active: g.active,
+                                contacts: []
+                            }
+            GetContacts({user: user._id, group: g._id})
+                .then(contacts => {
+                    tempGroup.contacts.push(contacts)
+                })
+                .catch(err => 
+                    { throw err} 
+                )
+                groupsWithContacts.push(tempGroup)
+        })
+        return res.send({ groups : groupsWithContacts })
     } catch (Error) {
-        return res.send({contacts: null, message: Error.message})
+        return res.send({ groups : null, message: Error.message})
     }
 }
 
@@ -29,12 +35,49 @@ const createGroup = async (req, res) => {
         const { name } = req.body
         const user = req.user
         if(!user) throw Error("You are not logged in.")
-        let group = await AddGroup({user: user._id, name})
+        let temp = await AddGroup({user: user._id, name})
+
+        group = { id: temp._id, name: temp.name, contacts: [], active: temp.active }
         return res.send({ group })
     } catch (Error) {
         return res.send({ group: null, message: Error.message})
     }
 }
 
+const editGroup = async (req, res) => {
+    try {
+        const { name, active } = req.body
+        const user = req.user
+        if(!user) throw Error("You are not logged in.")
+        let temp = await EditGroup({user: user._id, name})
+
+        group = { id: temp._id, name: temp.name, active: temp.active, contacts: [] }
+
+        //change active state of all the associated contacts
+        //todo
+        let tempContacts = await GetContacts({user: user._id, group: group.id})
+
+        group.contacts.push(tempContacts)
+        return res.send({ group })
+    } catch (Error) {
+        return res.send({ group: null, message: Error.message})
+    }
+}
+
+const deleteGroup = async (req, res) => {
+    try{
+        const { id, name } = req.body
+        const user = req.user
+        if(!user) throw Error("You are not logged in.")
+        let temp = await DeleteGroup({user: user._id, name})
+        //todo delete all associated contacts
+        group = { id: temp._id, name: temp.name, active: temp.active, contacts: [] }
+        let tempContacts = await GetContacts({user: user._id, group: group.id})
+        group.contacts.push(tempContacts)
+        return res.send({ group })
+    } catch(Error) {
+        return res.send({ group: null, message: Error.message})
+    }
+}
 
 module.exports = { getGroupList, createGroup }

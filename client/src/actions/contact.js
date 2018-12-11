@@ -4,9 +4,7 @@ import { proxy, handleError } from '../api/api'
 const { AddContact, AddContact_Success, AddContact_Failure } = constants
 
 export const addContactAction = function ({name, email, job, phone}) {
-    const config = { headers: {
-        'auth': sessionStorage.getItem('token')
-    }}
+    const config = getConfig();
     const request = proxy.post('contacts/add', {name, email, job, phone}, config)
     return async (dispatch) => {
         dispatch(addContactStarted())

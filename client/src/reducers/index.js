@@ -5,7 +5,7 @@ import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    family: contactReducer,
+    contact: contactReducer,
     group: groupReducer
 })
 

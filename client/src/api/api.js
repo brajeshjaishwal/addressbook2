@@ -6,6 +6,10 @@ export const proxy = axios.create({
     baseURL: process.env.NODE_ENV === 'production' ? 'https://addressbook-2.herokuapp.com/' : 'http://localhost:3300/'
 })
 
+export function getConfig() {
+        return { headers: {'auth': sessionStorage.getItem('token') } }
+}
+
 export const handleError = error => {
     let errorMessage = ''
     if (error.response) {

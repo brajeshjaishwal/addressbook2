@@ -20,14 +20,15 @@ const groupReducer = (state = initialState, action) => {
         case globals.RemoveGroup_Success:
         case globals.AddGroup:
         case globals.AddGroup_Failure:
-        case globals.AddGroup_Success:
         case globals.FetchGroup:
         case globals.FetchGroup_Success:
         case globals.FetchGroup_Failure:
         case globals.FetchGroupList:
         case globals.FetchGroupList_Success:
         case globals.FetchGroupList_Failure:
-            return { ...state, ...action.payload}            
+            return { ...state, ...action.payload}
+        case globals.AddGroup_Success:
+            return { ...state, groups: [...state.groups, action.payload.group], ...action.payload} 
         default: 
             return { ...state }
     }

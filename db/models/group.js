@@ -6,8 +6,14 @@ const ContactGroupSchema = new Schema({
         type: String,
         required: [true,'name is a required field.']
     },
-    active: Boolean,                //active/inactive
-    category: String,               //category
+    active: {
+        type: Boolean,                //active/inactive
+        default: true
+    },
+    category: {
+        type: String,               //category
+        default: 'None'
+    },
     photo: String,                  //photo url
     user: Schema.Types.ObjectId //which user this group belongs to
 })

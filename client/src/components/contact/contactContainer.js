@@ -58,7 +58,12 @@ export default class ContactContainerComponent extends Component {
                             { key: 'name', text: 'name', value: 'name' },
                             { key: 'email', text: 'email', value: 'email' },
                             { key: 'phone', text: 'phone', value: 'phone' },
-                        ]
+        ]
+        const pageSizeOptions = [
+            { key: '10', text: '10', value: '10' },
+            { key: '15', text: '15', value: '15' },
+            { key: '20', text: '20', value: '20' },
+        ]
         return (
             <div>
                 <Segment>
@@ -95,7 +100,13 @@ export default class ContactContainerComponent extends Component {
                         onPageChange={this.handlePaginationChange}
                         totalPages={this.state.totalPages}
                     />
-                    <Input name='pagesize' placeholder='pagesize' onChange={this.onChangeHandler}/>
+                    <Input>
+                        <Select name='pagesize' compact
+                            style={{marginLeft:'1em'}} 
+                            options={pageSizeOptions} 
+                            defaultValue='10' />
+                        <Button disabled>Page Size</Button>
+                    </Input>
                 </Segment>
             </div>
         )
