@@ -26,10 +26,6 @@ class EditContactComponent extends Component {
         if(this.state.contactid) {
             //fetch cached contact detail
         }
-        await this.props.fetchGroupNames();
-        if(this.props.groupNames && this.props.groupNames.length > 0) {
-            this.setState({group: this.props.groupNames[0]})
-        }
     }
 
     onSelectionChange = ({name, value}) => {
@@ -55,9 +51,19 @@ class EditContactComponent extends Component {
     render() {
         let groups = this.props.groups || []
         let options = []
-        groups.forEach(g => {
-            options.push({key: g.id, text: g.name, value: g.name})
-        })
+        let defaultGroup = ''
+        if(groups.length > 0) {
+            groups.forEach(g => {
+                options.push({key: g.id, text: g.name, value: g.name})
+            })
+            if(this.state.contactid) {
+                //we are editing existing contact
+                defaultGroup = ''
+            } else {
+                defaultGroup = options[0].text
+            }
+        }
+        console.log('edit contact render', options)
         return (
             <Modal size='mini' open={this.state.open} closeOnEscape={true} closeOnDimmerClick={true}>
                 <Header color='orange' style={{background:'orange'}}>Contact Information</Header>
@@ -73,7 +79,7 @@ class EditContactComponent extends Component {
                         onChange={this.onChangeHandler} icon='info' iconPosition='left' />
                     <Input fluid style={{marginTop:'0.5em'}} onChange={this.onChangeHandler}>
                         <Select name = 'group' compact fluid options={options} 
-                            //defaultValue={this.state.group}                             
+                            defaultValue={defaultGroup}                             
                             onChange={event => this.onSelectionChange({name: 'group', value: event.target.textContent })} />
                         <Button disabled>Group</Button>
                     </Input>
@@ -108,12 +114,12 @@ function mapStateToPrps(state) {
     console.log('mapstatetoprops in edit contact', state)
     return {
         contact: state.currentContact,
-        groups: state.group.groupNames,
+        groups: state.group.groups,
     }
 }
 function mapDispatchToProps(dispatch) {
     return {
-        fetchGroupNames: bindActionCreators(fetchCachedGroupNamesAction, dispatch),
+        fetchContact: bindActionCreators(fetchCachedGroupNamesAction, dispatch),
     }
 }
 

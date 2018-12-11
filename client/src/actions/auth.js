@@ -31,7 +31,6 @@ export const loginUserAction = ({email, password}) => {
     return async (dispatch) => {
         dispatch(loginStarted())
         try{
-            console.log('login user action', process.env)
             let resp = await proxy.post('users/login', {email, password})
             let {user, token, message } = await resp.data
             if(user && user !== '' && user !== undefined)

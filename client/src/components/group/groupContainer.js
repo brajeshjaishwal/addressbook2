@@ -21,6 +21,9 @@ class GroupContainerComponent extends Component {
 
     onAddGroup = async event => {
         await this.props.addGroup({name: this.state.newgroup})
+        if(this.props.error) {
+            alert(this.props.error)
+        }
         this.setState({newgroup: ''})
     }
 

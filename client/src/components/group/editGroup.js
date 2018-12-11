@@ -25,7 +25,14 @@ class EditGroupComponent extends Component {
     onSubmitHandler = async (event) => {
         event.preventDefault()
         this.setState({open: false})
-        await this.props.addGroup({ name: this.state.group })
+        let options = { 
+                        groupid: this.props.dirtyGroup.id, 
+                        name: this.state.group }
+        if(this.state.active !== this.props.dirtyGroup.active) {
+            options.active = this.state.active
+        }
+        console.log('on edit group', options)
+        await this.props.editGroup(options)
         this.props.history.push('/dashboard')
     }
 
