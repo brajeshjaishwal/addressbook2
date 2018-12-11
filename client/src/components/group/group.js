@@ -13,6 +13,7 @@ class GroupComponent extends Component {
     render() {
         let { id, name, active, total } = this.props.group
         let selectedGroup = this.props.match.params.group || 'All Contacts'
+        let editable = name !== 'All Contacts'
         return (
             <List.Item key={id} >
                 <Card fluid color={selectedGroup === name ? 'red' : 'grey'} >
@@ -23,18 +24,22 @@ class GroupComponent extends Component {
                                     <div >
                                         <Link to={`/dashboard/${name}`}>{name}</Link>
                                         <Label circular style={{marginLeft:'1em'}} >{total}</Label>
+                                        {   editable && 
                                         <Label circular style={{marginLeft:'1em'}}>
                                             { active ? 'Active' : 'Inactive' }
                                         </Label>
+                                        }
                                     </div>
                                 </Grid.Column>
                                 <Grid.Column width='5' >
+                                {   editable && 
                                     <div>
                                         <Button icon='pencil' size='tiny' circular
                                             onClick={this.onEdit}/>
                                         <Button icon='delete' size='tiny' circular color='yellow' 
                                             onClick={this.onDelete} />
                                     </div>
+                                }
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
