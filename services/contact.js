@@ -1,4 +1,4 @@
-const { GetContact, GetContacts, AddContact, EditContact, DeleteContact } = require('../db/index')
+const { GetContact, AddContact, EditContact, DeleteContact } = require('../db/index')
 
 const createContact = async (req, res) => {
     try{
@@ -44,16 +44,5 @@ const getContact = async (req, res) => {
         return res.send({ contact: null, message: Error.message})
     }
 }
-const getContactList = async (req, res) => {
-    try {
-        const { groupid } = req.params
-        const user = req.user
-        if(!user) throw Error("You are not logged in.")
-        let contacts = await GetContacts({user: user._id, group: groupid})
-        return res.send({ contacts })
-    } catch (Error) {
-        return res.send({contacts: null, message: Error.message})
-    }
-}
 
-module.exports = { createContact, getContactList, updateContact, removeContact, getContact }
+module.exports = { createContact, updateContact, removeContact, getContact }

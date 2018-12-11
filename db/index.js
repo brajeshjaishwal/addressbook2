@@ -151,8 +151,17 @@ const DeleteGroup = async function(id) {
     }
 }
 
+const GetGroups = async function(user) {
+    try {
+        const temp = await Group.find({user})
+        return { groups: temp}
+    }catch(Error) {
+        throw Error
+    }
+}
+
 module.exports = {  Connect, Login, Register, 
                     GetContact, GetContacts, 
                     AddContact, EditContact, DeleteContact,
-                    AddGroup, EditGroup, DeleteGroup,
+                    GetGroups, AddGroup, EditGroup, DeleteGroup,
                     GetCurrentUser }

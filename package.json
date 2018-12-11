@@ -41,10 +41,11 @@
     "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild":"npm install --prefix client && npm run build --prefix client"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10.x"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -30,7 +30,10 @@ const ContactSchema = new Schema({
     //social accounts e.g. facebook, linkedin and etc.
     photo: String,              //photo url
     starred: Boolean,           //important
-    active: Boolean,            //active/inactive
+    active: {
+        type: Boolean,            //active/inactive
+        default: true
+    },
     user: Schema.Types.ObjectId,//which user this belongs to
     group: Schema.Types.ObjectId,//which group this belongs to
 })

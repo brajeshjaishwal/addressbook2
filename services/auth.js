@@ -9,6 +9,7 @@ const register = async (req, res) => {
     try{
         let {name, email, phone, password} = req.body
         email += domain
+        console.log('register', email)
         const { user, token } = await Register({name, email, phone, password})
         return res.send({ user, token })
     }catch(Error){
@@ -20,6 +21,7 @@ const login = async (req, res) => {
     try{
         let { email, password } = req.body
         email += domain
+        console.log('login', email)
         const { user, token } = await Login({email, password})
         req.user = user
         return res.send({ user, token })
