@@ -72,7 +72,9 @@ class EditGroupComponent extends Component {
 
 function mapStateToProps(state) {
     return {
-        dirtyGroup: state.group.dirtyGroup
+        dirtyGroup: state.group.dirtyGroup,
+        loading: state.group.loading,
+        error: state.group.error
     }
 }
 function mapDispatchToProps(dispatch) {

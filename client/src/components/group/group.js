@@ -41,6 +41,7 @@ class GroupComponent extends Component {
                                         <Button icon='pencil' size='tiny' circular
                                             onClick={this.onEdit}/>
                                         <Button icon='delete' size='tiny' circular color='yellow' 
+                                            loading = {this.props.loading === id}
                                             onClick={this.onDelete} />
                                     </div>
                                 }
@@ -54,11 +55,15 @@ class GroupComponent extends Component {
     }
 }
 
-
+function mapStateToProps(state) {
+    return {
+        loading: state.group.loading,
+        error: state.group.error
+    }
+}
 function mapDispatchToProps(dispatch) {
     return {
         removeGroup: bindActionCreators(deleteGroupAction, dispatch)
-        //editGroup: bindActionCreators()
     }
 }
-export default connect(null, mapDispatchToProps)(GroupComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupComponent)

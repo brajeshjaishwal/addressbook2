@@ -26,16 +26,16 @@ export const addGroupAction = function ({ name }) {
             dispatch(addGroupFailed(errorMessage))
         }
     }
-    function addGroupStarted() { return { type: AddGroup, payload: {error: '', success: false, loading: true} } }
-    function addGroupSucceded(group) { return { type: AddGroup_Success, payload: { group, loading: false, success: true } } }
-    function addGroupFailed(error) { return { type: AddGroup_Failure, payload: { error, loading: false} }}
+    function addGroupStarted() { return { type: AddGroup, payload: {error: '', success: false, loading: 'addgroup'} } }
+    function addGroupSucceded(group) { return { type: AddGroup_Success, payload: { group, loading: '', success: true } } }
+    function addGroupFailed(error) { return { type: AddGroup_Failure, payload: { error, loading: ''} }}
 }
 
 export const deleteGroupAction = function ({ groupid }) {
     const config = getConfig();
     const request = proxy.delete(`contacts/group/${groupid}`, config)
     return async (dispatch) => {
-        dispatch(deleteGroupStarted())
+        dispatch(deleteGroupStarted(groupid))
         try{
             let resp = await request
             let { group, message } = await resp.data
@@ -50,9 +50,9 @@ export const deleteGroupAction = function ({ groupid }) {
             dispatch(deleteGroupFailed(errorMessage))
         }
     }
-    function deleteGroupStarted() { return { type: RemoveGroup, payload: {error: '', success: false, loading: true} } }
-    function deleteGroupSucceded(group) { return { type: RemoveGroup_Success, payload: { group, loading: false, success: true } } }
-    function deleteGroupFailed(error) { return { type: RemoveGroup_Failure, payload: { error, loading: false} }}
+    function deleteGroupStarted(groupid) { return { type: RemoveGroup, payload: {error: '', success: false, loading: groupid} } }
+    function deleteGroupSucceded(group) { return { type: RemoveGroup_Success, payload: { group, loading: '', success: true } } }
+    function deleteGroupFailed(error) { return { type: RemoveGroup_Failure, payload: { error, loading: ''} }}
 }
 
 export const editGroupAction = function ({groupid, name, active}) {

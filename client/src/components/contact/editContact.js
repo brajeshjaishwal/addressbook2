@@ -1,26 +1,45 @@
 import React, {Component} from 'react'
-import { Input, Button, Modal, Divider, Checkbox, Header, Select } from 'semantic-ui-react'
+import { Input, Button, Modal, Divider, Checkbox, Header, Select, Dropdown } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { registerUserAction } from '../../actions/auth';
-import { fetchCachedGroupNamesAction } from '../../actions/group';
+import { addContactAction, editContactAction } from '../../actions/contact';
 
 class EditContactComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            contactid: this.props.match.params.id,
+            id: this.props.match.params.id,
             name: this.props.name,
             job: this.props.job,
             phone: this.props.phone,
             email: this.props.email,
             group: this.props.group || '',
-            active: this.props.active,
+            groupid:'',
+            groupoptions: [],
+            active: this.props.active || true,
             open: true,
         }
     }
 
     async componentDidMount() {
+        let groups = this.props.groups || []
+        let options = []
+        
+        if(groups.length > 0) {
+            let defaultGroup = ''
+            groups.forEach(g => {
+                options.push({key: g.id, text: g.name, value: g.name})
+            })
+            if(this.state.contactid) {
+                //we are editing existing contact
+                //we will come on this
+                defaultGroup = ''
+            } else {
+                defaultGroup = options[0].text
+            }
+            this.setState({group: defaultGroup})
+        }
+        this.setState({groupoptions: options})
         //let contactid = this.props.match.params.id
         //console.log('contact id', contactid)
         if(this.state.contactid) {
@@ -29,8 +48,9 @@ class EditContactComponent extends Component {
     }
 
     onSelectionChange = ({name, value}) => {
-        this.setState({name, value})
+        this.setState({[name]: value})
     }
+
     onChangeHandler = (e) => {
         this.setState({[e.target.name]: e.target.value})
     }
@@ -38,7 +58,11 @@ class EditContactComponent extends Component {
     onSubmitHandler = async (event) => {
         event.preventDefault()
         this.setState({open: false})
-        await this.props.registerUser({name: this.state.name, password: this.state.password})
+        let { id, name, phone, email, job, group, active, groupoptions } = this.state
+        let groupid = groupoptions.find(o => o.text === group).key
+        this.state.contactid ? 
+            await this.props.editContact({id, name, phone, email, job, group: groupid, active}) :
+            await this.props.addContact({ name, phone, email, job, group:groupid, active})
         this.props.history.push('/dashboard')
     }
 
@@ -49,21 +73,7 @@ class EditContactComponent extends Component {
     }
 
     render() {
-        let groups = this.props.groups || []
-        let options = []
-        let defaultGroup = ''
-        if(groups.length > 0) {
-            groups.forEach(g => {
-                options.push({key: g.id, text: g.name, value: g.name})
-            })
-            if(this.state.contactid) {
-                //we are editing existing contact
-                defaultGroup = ''
-            } else {
-                defaultGroup = options[0].text
-            }
-        }
-        console.log('edit contact render', options)
+        
         return (
             <Modal size='mini' open={this.state.open} closeOnEscape={true} closeOnDimmerClick={true}>
                 <Header color='orange' style={{background:'orange'}}>Contact Information</Header>
@@ -78,9 +88,9 @@ class EditContactComponent extends Component {
                     <Input name="job" fluid placeholder='Enter job role' style={{marginTop: '0.5em'}}
                         onChange={this.onChangeHandler} icon='info' iconPosition='left' />
                     <Input fluid style={{marginTop:'0.5em'}} onChange={this.onChangeHandler}>
-                        <Select name = 'group' compact fluid options={options} 
-                            defaultValue={defaultGroup}                             
-                            onChange={event => this.onSelectionChange({name: 'group', value: event.target.textContent })} />
+                        <Select name = 'group' compact fluid options={this.state.groupoptions || []} selection
+                            value = { this.state.group }
+                                onChange={event => this.onSelectionChange({name: 'group', value: event.target.textContent })} />
                         <Button disabled>Group</Button>
                     </Input>
 
@@ -119,7 +129,8 @@ function mapStateToPrps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        fetchContact: bindActionCreators(fetchCachedGroupNamesAction, dispatch),
+        addContact: bindActionCreators(addContactAction, dispatch),
+        editContact: bindActionCreators(editContactAction, dispatch)
     }
 }
 

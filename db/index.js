@@ -95,18 +95,18 @@ const GetContact = async function({id}) {
         throw Error
     }
 }
-const AddContact = async function({user, name, email, phone, group, starred }) {
+const AddContact = async function({user, name, email, phone, job, group, active, starred }) {
     try{
-        const temp = await new Contact({ user, name, email, phone, group, starred }).save();
+        const temp = await new Contact({ user, name, email, phone, group, active, starred }).save();
         return temp
     }catch(Error) {
         throw Error
     }
 }
 
-const EditContact = async function(req) {
+const EditContact = async function({id, user, name, email, phone, job, group, active, starred }) {
     try {
-        const temp = await Contact.findByIdAndUpdate(req.params.contactid, req.body)
+        const temp = await Contact.findOneAndUpdate(id, {user, name, email , phone,group, active, starred})
         return temp
     }catch(Error) {
         throw Error
@@ -115,7 +115,7 @@ const EditContact = async function(req) {
 
 const DeleteContact = async function({id}) {
     try {
-        const temp = await Contact.findByIdAndRemove({id})
+        const temp = await Contact.findOneAndDelete({id})
         return temp
     }catch(Error) {
         throw Error
