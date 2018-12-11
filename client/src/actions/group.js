@@ -2,7 +2,8 @@ import constants from '../constants/group'
 import { proxy, handleError, getConfig } from '../api/api'
 
 const { AddGroup, AddGroup_Success, AddGroup_Failure,
-        FetchGroup, FetchGroup_Success, FetchGroup_Failure,
+        FetchCachedGroup, FetchCachedGroupNames,
+        FetchGroupList, FetchGroupList_Success, FetchGroupList_Failure,
         RemoveGroup, RemoveGroup_Success, RemoveGroup_Failure,
         EditGroup, EditGroup_Success, EditGroup_Failure } = constants
 
@@ -86,7 +87,6 @@ export const fetchAllGroupsAction = function () {
         try{
             let resp = await request
             let result = await resp.data
-            console.log('fetchAllGroupsAction', result)
             if(result.groups === null) {
                 dispatch(fetchGroupsFailed(result.message))    
             } else {
@@ -97,7 +97,21 @@ export const fetchAllGroupsAction = function () {
             dispatch(fetchGroupsFailed(errorMessage))
         }
     }
-    function fetchGroupsStarted() { return { type: FetchGroup, payload: { loading: true, error: '' } } }
-    function fetchGroupsSucceded(groups) { return { type: FetchGroup_Success, payload: { groups, loading: false } } }
-    function fetchGroupsFailed(error) { return { type: FetchGroup_Failure, payload: { error, loading: false}}}
+    function fetchGroupsStarted() { return { type: FetchGroupList, payload: { loading: true, error: '' } } }
+    function fetchGroupsSucceded(groups) { return { type: FetchGroupList_Success, payload: { groups, loading: false } } }
+    function fetchGroupsFailed(error) { return { type: FetchGroupList_Failure, payload: { error, loading: false}}}
+}
+
+export const fetchCachedGroupAction = function ({groupid}) {
+    return {
+        type: FetchCachedGroup,
+        payload: { groupid }
+    }
+}
+
+export const fetchCachedGroupNamesAction = function () {
+    return {
+        type: FetchCachedGroupNames,
+        payload: { }
+    }
 }

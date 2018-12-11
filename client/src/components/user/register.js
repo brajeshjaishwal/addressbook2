@@ -64,7 +64,6 @@ class RegisterComponent extends Component {
 
     onSubmitHandler = async (event) => {
         event.preventDefault()
-        console.log(this.state.name)
         if( this.state.emailError || this.state.passwordError || this.state.phoneError ||
             !this.state.name || !this.state.password || !this.state.phone || !this.state.email)
         {

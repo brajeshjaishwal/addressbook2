@@ -2,18 +2,22 @@ import React, {Component} from 'react'
 import { Input, Button, Modal, Divider, Checkbox, Header } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { addGroupAction, editGroupAction } from '../../actions/group';
+import { fetchCachedGroupAction, editGroupAction } from '../../actions/group';
 
 class EditGroupComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
-            group: this.props.group | '',
-            active: this.props.active | false,
+            group:'',
+            active: false,
             open: true,
         }
     }
 
+    async componentDidMount() {
+        await this.props.fetchCachedGroup({groupid: this.props.match.params.id})
+        this.setState({group: this.props.dirtyGroup.name, active: this.props.dirtyGroup.active})
+    }
     onChangeHandler = (e) => {
         this.setState({[e.target.name]: e.target.value})
     }
@@ -37,7 +41,9 @@ class EditGroupComponent extends Component {
                 <Header color='orange' style={{background:'orange'}}>Group Information</Header>
                 <Modal.Content>
                     <Input name="group" fluid placeholder='Enter group' style={{marginTop: '0.5em'}}
-                        onChange={this.onChangeHandler} icon='group' iconPosition='left' />
+                        icon='group' iconPosition='left' 
+                        onChange={this.onChangeHandler} 
+                        value={ this.state.group }/>
                     <Checkbox name = 'active' toggle style={{marginTop:'1em'}}
                         label={ this.state.active ? 'deactivate' : 'activate'}
                         checked = { this.state.active }
@@ -57,11 +63,16 @@ class EditGroupComponent extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        dirtyGroup: state.group.dirtyGroup
+    }
+}
 function mapDispatchToProps(dispatch) {
     return {
-        addGroup: bindActionCreators(addGroupAction, dispatch),
+        fetchCachedGroup: bindActionCreators(fetchCachedGroupAction, dispatch),
         editGroup: bindActionCreators(editGroupAction, dispatch)
     }
 }
 
-export default connect(null, mapDispatchToProps)(EditGroupComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(EditGroupComponent)

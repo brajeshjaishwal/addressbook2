@@ -3,6 +3,7 @@ import { Input, Button, Modal, Divider, Checkbox, Header, Select } from 'semanti
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { registerUserAction } from '../../actions/auth';
+import { fetchCachedGroupNamesAction } from '../../actions/group';
 
 class EditContactComponent extends Component {
     constructor(props){
@@ -13,17 +14,21 @@ class EditContactComponent extends Component {
             job: this.props.job,
             phone: this.props.phone,
             email: this.props.email,
-            group: this.props.group,
+            group: this.props.group || '',
             active: this.props.active,
             open: true,
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         //let contactid = this.props.match.params.id
         //console.log('contact id', contactid)
         if(this.state.contactid) {
             //fetch cached contact detail
+        }
+        await this.props.fetchGroupNames();
+        if(this.props.groupNames && this.props.groupNames.length > 0) {
+            this.setState({group: this.props.groupNames[0]})
         }
     }
 
@@ -48,17 +53,11 @@ class EditContactComponent extends Component {
     }
 
     render() {
+        let groups = this.props.groups || []
         let options = []
-        let groupList = [
-            { id:'1111', name: 'Friends', active: true, total: 2 }, 
-            { id:'2222', name: 'Project', active: true, total: 5 },
-            { id:'3333', name: 'Work', active: false, total: 3 },
-            { id:'0000', name: 'All Contacts', active: true, total: 10 }, 
-        ]
-        groupList.forEach(g => {
+        groups.forEach(g => {
             options.push({key: g.id, text: g.name, value: g.name})
         })
-        console.log(options)
         return (
             <Modal size='mini' open={this.state.open} closeOnEscape={true} closeOnDimmerClick={true}>
                 <Header color='orange' style={{background:'orange'}}>Contact Information</Header>
@@ -73,8 +72,8 @@ class EditContactComponent extends Component {
                     <Input name="job" fluid placeholder='Enter job role' style={{marginTop: '0.5em'}}
                         onChange={this.onChangeHandler} icon='info' iconPosition='left' />
                     <Input fluid style={{marginTop:'0.5em'}} onChange={this.onChangeHandler}>
-                        <Select name = 'group' compact options={options} 
-                            defaultValue='All Contacts' fluid                            
+                        <Select name = 'group' compact fluid options={options} 
+                            //defaultValue={this.state.group}                             
                             onChange={event => this.onSelectionChange({name: 'group', value: event.target.textContent })} />
                         <Button disabled>Group</Button>
                     </Input>
@@ -82,10 +81,10 @@ class EditContactComponent extends Component {
                     {   
                         //display active/inactive checkbox when editing existing contact
                         this.state.contactid && 
-                    <Checkbox name = 'active' toggle style={{marginTop:'1em'}}
-                            label={ this.state.active ? 'deactivate' : 'activate'}
-                            checked = { this.state.active }
-                            onChange={this.onChangeHandler} />
+                        <Checkbox name = 'active' toggle style={{marginTop:'1em'}}
+                                label={ this.state.active ? 'deactivate' : 'activate'}
+                                checked = { this.state.active }
+                                onChange={this.onChangeHandler} />
                     }
 
                     {//display error information
@@ -106,13 +105,15 @@ class EditContactComponent extends Component {
 }
 
 function mapStateToPrps(state) {
+    console.log('mapstatetoprops in edit contact', state)
     return {
-        contact: state.currentContact
+        contact: state.currentContact,
+        groups: state.group.groupNames,
     }
 }
 function mapDispatchToProps(dispatch) {
     return {
-        registerUser: bindActionCreators(registerUserAction, dispatch),
+        fetchGroupNames: bindActionCreators(fetchCachedGroupNamesAction, dispatch),
     }
 }
 

@@ -10,7 +10,6 @@ let initialState = {
 }
 
 const groupReducer = (state = initialState, action) => {
-    console.log('groupReducer', state)
     switch(action.type) {
         case globals.EditGroup:
         case globals.EditGroup_Failure:
@@ -19,9 +18,6 @@ const groupReducer = (state = initialState, action) => {
         case globals.RemoveGroup_Failure:
         case globals.AddGroup:
         case globals.AddGroup_Failure:
-        case globals.FetchGroup:
-        case globals.FetchGroup_Success:
-        case globals.FetchGroup_Failure:
         case globals.FetchGroupList:
         case globals.FetchGroupList_Success:
         case globals.FetchGroupList_Failure:
@@ -32,6 +28,11 @@ const groupReducer = (state = initialState, action) => {
             //removed all contacts with the group id
             let filtered = state.groups.filter(group => group.id !== action.payload.group.id)
             return { ...state, groups: filtered, ...action.payload}
+        case globals.FetchCachedGroup:
+            let dirtyGroup = state.groups.filter(g => g.id === action.payload.groupid)[0]
+            return { ...state, dirtyGroup }
+        case globals.FetchCachedGroupNames:
+            return { ...state, groupNames: state.groups }
         default: 
             return { ...state }
     }

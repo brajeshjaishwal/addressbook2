@@ -10,7 +10,6 @@ let initialState = {
 }
 
 const authReducer = (state = initialState, action) => {
-    console.log('authreducer', state)
     switch(action.type) {
         case globals.LOGIN:
         case globals.LOGIN_FAILED:

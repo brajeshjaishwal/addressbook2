@@ -10,7 +10,6 @@ let initialState = {
 }
 
 const contactReducer = (state= initialState, action) => {
-    console.log('contactReducer', state)
     switch(action.type) {
         case globals.AddContact:
         case globals.AddContact_Failure:

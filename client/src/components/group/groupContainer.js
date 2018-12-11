@@ -73,7 +73,6 @@ class GroupContainerComponent extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('group container- mapstatetoprops', state)
     return {
         groups: state.group.groups,
         loading: state.group.loading,

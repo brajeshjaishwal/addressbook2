@@ -11,9 +11,8 @@ const constants = {
     EditGroup_Success: 'EditGroup_Success',
     EditGroup_Failure: 'EditGroup_Failure',
 
-    FetchGroup: 'FetchGroup',
-    FetchGroup_Success: 'FetchGroup_Success',
-    FetchGroup_Failure: 'FetchGroup_Failure',
+    FetchCachedGroup: 'FetchCachedGroup',
+    FetchCachedGroupNames: 'FetchCachedGroupName',
 
     FetchGroupList: 'FetchGroupList',
     FetchGroupList_Success: 'FetchGroupList_Success',

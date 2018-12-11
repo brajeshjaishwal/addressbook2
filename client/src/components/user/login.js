@@ -20,7 +20,6 @@ class LoginComponent extends Component {
     }
 
     onSubmitHandler = async (event) => {
-        console.log(this.state)
         event.preventDefault()
         if(!this.state.email || !this.state.password)
         {
