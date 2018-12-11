@@ -74,6 +74,9 @@ app.get('/contacts/group/list', async(req, res) => groupManager.getGroupList(req
 //create group
 app.post('/contacts/group/add', async(req, res) => groupManager.createGroup(req, res))
 
+//create group
+app.delete('/contacts/group/:groupid', async(req, res) => groupManager.deleteGroup(req, res))
+
 //fetch all contacts in a group
 app.get('/contacts/group/:groupid', async(req, res) => groupManager.getGroup(req, res))
 

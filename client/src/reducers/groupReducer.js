@@ -2,7 +2,7 @@ import globals from '../constants/group'
 
 let initialState = {
     groups: [/* list of groups and underneath contact list*/],
-    key:'',
+    selectedGroup: 'All Contacts',
     loading: false,
     error: '',
     errorMessage: '',

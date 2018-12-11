@@ -142,7 +142,7 @@ const EditGroup = async function(id, name) {
     }
 }
 
-const DeleteGroup = async function(id) {
+const DeleteGroup = async function({id}) {
     try {
         const temp = await Group.findByIdAndRemove({id})
         return { group: temp}

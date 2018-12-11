@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { List, Card, Grid, Button, Label } from 'semantic-ui-react';
+import { deleteGroupAction } from '../../actions/group';
+import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
 
 class GroupComponent extends Component {
     onEdit = event => {
         event.preventDefault()
         this.props.history.push(`/editgroup/${this.props.group.id}`)
     }
-    onDelete = event => {
+    onDelete = async event => {
         event.preventDefault()
+        await this.props.removeGroup({groupid: this.props.group.id})
     }
     render() {
         let { id, name, active, total } = this.props.group
@@ -50,4 +54,11 @@ class GroupComponent extends Component {
     }
 }
 
-export default GroupComponent
+
+function mapDispatchToProps(dispatch) {
+    return {
+        removeGroup: bindActionCreators(deleteGroupAction, dispatch)
+        //editGroup: bindActionCreators()
+    }
+}
+export default connect(null, mapDispatchToProps)(GroupComponent)
