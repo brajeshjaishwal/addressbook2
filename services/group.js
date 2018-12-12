@@ -8,22 +8,19 @@ const getGroupList = async (req, res) => {
         let groups = await GetGroups({user: user._id})
         let groupsWithContacts = []
         
-        groups.forEach(g => {
+        //groups.forEach(g => {
+        for(let g of groups) {
             let tempGroup = {
                                 id: g._id,
                                 name: g.name,
                                 active: g.active,
                                 contacts: []
                             }
-            GetContacts({user: user._id, group: g._id})
-                .then(contacts => {
-                    tempGroup.contacts.push(contacts)
-                })
-                .catch(err => 
-                    { throw err} 
-                )
-                groupsWithContacts.push(tempGroup)
-        })
+            let tempContacts = await GetContacts({user: user._id, group: g._id})
+            tempGroup.contacts.push(tempContacts)
+            groupsWithContacts.push(tempGroup)
+        }
+    //)
         return res.send({ groups : groupsWithContacts })
     } catch (Error) {
         return res.send({ groups : null, message: Error.message})
