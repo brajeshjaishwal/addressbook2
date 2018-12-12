@@ -45,7 +45,7 @@
     "heroku-postbuild":"npm install --prefix client && npm run build --prefix client"
   },
   "engines": {
-    "node": "10.x"
+    "node": "8.x"
   },
   "eslintConfig": {
     "extends": "react-app"
