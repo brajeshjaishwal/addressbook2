@@ -27,9 +27,16 @@ const ContactSchema = new Schema({
         type: Number,
         minlength: 10
     },
+    job: {
+        type: String,
+        default: ''
+    },
     //social accounts e.g. facebook, linkedin and etc.
     photo: String,              //photo url
-    starred: Boolean,           //important
+    starred: {
+        type: Boolean,           //important
+        default: false
+    },
     active: {
         type: Boolean,            //active/inactive
         default: true

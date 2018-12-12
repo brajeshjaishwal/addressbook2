@@ -7,22 +7,25 @@ import { addContactAction, editContactAction } from '../../actions/contact';
 class EditContactComponent extends Component {
     constructor(props){
         super(props)
+        let contact = {} 
+        if(this.props.match.params.id) {
+            contact = this.props.location.state.data
+        }
+
         this.state = {
             id: this.props.match.params.id,
-            name: this.props.name,
-            job: this.props.job,
-            phone: this.props.phone,
-            email: this.props.email,
-            group: this.props.group || '',
-            groupid:'',
+            name: contact.name || '',
+            job: contact.job || '',
+            phone: contact.phone || '',
+            email: contact.email || '',
+            group: contact.group || '',
             groupoptions: [],
-            active: this.props.active || true,
+            active: contact.active || true,
             open: true,
         }
     }
 
     async componentDidMount() {
-        console.log('edit contacts', this.state)
         let groups = this.props.groups || []
         let options = []
         
@@ -33,14 +36,13 @@ class EditContactComponent extends Component {
             })
             if(this.state.id) {
                 //we are editing existing contact
-                defaultGroup = ''
+                defaultGroup = this.state.group
             } else {
                 defaultGroup = options[0].text
             }
             this.setState({group: defaultGroup})
         }
         this.setState({groupoptions: options})
-        //let id = this.props.match.params.id
         if(this.state.id) {
             //fetch cached contact detail
         }
@@ -58,6 +60,7 @@ class EditContactComponent extends Component {
         event.preventDefault()
         this.setState({open: false})
         let { id, name, phone, email, job, group, active, groupoptions } = this.state
+        console.log('on edit submit', this.state)
         let groupid = groupoptions.find(o => o.text === group).key
         this.state.id ? 
             await this.props.editContact({id, name, phone, email, job, group: groupid, active}) :
@@ -71,6 +74,10 @@ class EditContactComponent extends Component {
         this.props.history.push('/dashboard')
     }
 
+    onCheckedChange = (name) => {
+        this.setState({[name]: !this.state[name]})
+    }
+
     render() {
         
         return (
@@ -78,27 +85,31 @@ class EditContactComponent extends Component {
                 <Header color='orange' style={{background:'orange'}}>Contact Information</Header>
                 <Modal.Content>
                     <Input name="name" fluid placeholder='Enter name' style={{marginTop: '0.5em'}}
+                        value = {this.state.name}
                         onChange={this.onChangeHandler} icon='user' iconPosition='left' />
                     <Input name="email" fluid placeholder='Enter email' style={{marginTop: '0.5em'}}
+                        value = {this.state.email}
                         onChange={this.onChangeHandler} icon='at' iconPosition='left' 
                         label='@inmar.com' labelPosition='right' />
                     <Input name="phone" fluid placeholder='Enter phone' style={{marginTop: '0.5em'}}
+                        value = {this.state.phone}
                         onChange={this.onChangeHandler} icon='phone' iconPosition='left' />
                     <Input name="job" fluid placeholder='Enter job role' style={{marginTop: '0.5em'}}
+                        value = {this.state.job}
                         onChange={this.onChangeHandler} icon='info' iconPosition='left' />
                     <Input fluid style={{marginTop:'0.5em'}} onChange={this.onChangeHandler}>
                         <Select name = 'group' compact fluid options={this.state.groupoptions || []} selection
                             value = { this.state.group }
-                                onChange={event => this.onSelectionChange({name: 'group', value: event.target.textContent })} />
+                            onChange={event => this.onSelectionChange({name: 'group', value: event.target.textContent })} />
                         <Button disabled>Group</Button>
                     </Input>
                     {   
                         //display active/inactive checkbox when editing existing contact
                         this.state.id && 
                         <Checkbox name = 'active' toggle style={{marginTop:'1em'}}
-                                label={ this.state.active ? 'deactivate' : 'activate'}
-                                checked = { this.state.active }
-                                onChange={this.onChangeHandler} />
+                            label={ this.state.active ? 'deactivate' : 'activate'}
+                            checked = { this.state.active }
+                            onChange={ e => this.onCheckedChange('active')} />
                     }
 
                     {//display error information
@@ -119,6 +130,7 @@ class EditContactComponent extends Component {
 }
 
 function mapStateToPrps(state) {
+    console.log('editContact', state)
     return {
         contact: state.currentContact,
         groups: state.group.groups,

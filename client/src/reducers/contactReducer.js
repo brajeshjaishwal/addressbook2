@@ -23,7 +23,7 @@ const contactReducer = (state= initialState, action) => {
         case globals.FetchContact_Success:
         case globals.FetchContact:
         case globals.FetchContact_Failure:
-            return { ...state, ...action.payload}            
+            return { ...state, ...action.payload}
         default: 
             return { ...state }
     }

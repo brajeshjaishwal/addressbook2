@@ -4,7 +4,12 @@ import { List, Card, Button, Grid, Label } from 'semantic-ui-react';
 class ContactComponent extends Component {
     onEdit = event => {
         event.preventDefault()
-        this.props.history.push(`/editcontact/${this.props.contact.id}`)
+        console.log('contact component', this.props.contact)
+        //this.props.history.push(`/editcontact/${this.props.contact._id}`)
+        this.props.history.push({
+            pathname: `/editcontact/${this.props.contact._id}`,
+            state: { data: this.props.contact}
+          })
     }
     onDelete = event => {
         event.preventDefault()
