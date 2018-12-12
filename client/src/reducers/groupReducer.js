@@ -19,7 +19,6 @@ const groupReducer = (state = initialState, action) => {
         case globals.AddGroup:
         case globals.AddGroup_Failure:
         case globals.FetchGroupList:
-        case globals.FetchGroupList_Success:
         case globals.FetchGroupList_Failure:
             return { ...state, ...action.payload}
         case globals.AddGroup_Success:
@@ -29,7 +28,7 @@ const groupReducer = (state = initialState, action) => {
             let filtered = state.groups.filter(group => group.id !== action.payload.group.id)
             return { ...state, groups: filtered, ...action.payload}
         case globals.FetchCachedGroup:
-            let dirtyGroup = state.groups.filter(g => g.id === action.payload.groupid)[0]
+            let dirtyGroup = state.groups.find(g => g.id === action.payload.groupid)
             return { ...state, dirtyGroup }
         case globals.FetchCachedGroupNames:
             return { ...state, groupNames: state.groups }
@@ -43,18 +42,33 @@ const groupReducer = (state = initialState, action) => {
             }
             if(action.payload.groupid === '00000') {
                 //we want all contacts to be displayed
-                //let allContacts = state.groups.map(g => g.contacts)
                 state.groups.forEach(g => {
                     if(g.total > 0) 
-                        selectedGroup.contacts.concat(g.contacts)
+                        selectedGroup.contacts.push(...g.contacts)
                 })
-                //selectedGroup.contacts.push(allContacts);
             } else {
                 //selective group
                 selectedGroup = state.groups.find(g => g.id === action.payload.groupid)
             }
-            console.log('fetchcachedgroupitems', selectedGroup)
             return { ...state, selectedGroup}
+        
+        case globals.FetchGroupList_Success:
+            
+            let allGroups = {
+                id: '00000',
+                name: 'All Contacts',
+                active: true,
+                total: 0,
+                contacts: []
+            }
+            if(action.payload.groupid === '00000') {
+                //we want all contacts to be displayed at initial rendering
+                state.groups.forEach(g => {
+                    if(g.total > 0) 
+                        allGroups.contacts.push(...g.contacts)
+                })
+            } 
+            return { ...state, selectedGroup: allGroups, ...action.payload}
         default: 
             return { ...state }
     }
