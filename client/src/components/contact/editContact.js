@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Input, Button, Modal, Divider, Checkbox, Header, Select, Dropdown } from 'semantic-ui-react'
+import { Input, Button, Modal, Divider, Checkbox, Header, Select } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { addContactAction, editContactAction } from '../../actions/contact';
@@ -22,6 +22,7 @@ class EditContactComponent extends Component {
     }
 
     async componentDidMount() {
+        console.log('edit contacts', this.state)
         let groups = this.props.groups || []
         let options = []
         
@@ -30,9 +31,8 @@ class EditContactComponent extends Component {
             groups.forEach(g => {
                 options.push({key: g.id, text: g.name, value: g.name})
             })
-            if(this.state.contactid) {
+            if(this.state.id) {
                 //we are editing existing contact
-                //we will come on this
                 defaultGroup = ''
             } else {
                 defaultGroup = options[0].text
@@ -40,9 +40,8 @@ class EditContactComponent extends Component {
             this.setState({group: defaultGroup})
         }
         this.setState({groupoptions: options})
-        //let contactid = this.props.match.params.id
-        //console.log('contact id', contactid)
-        if(this.state.contactid) {
+        //let id = this.props.match.params.id
+        if(this.state.id) {
             //fetch cached contact detail
         }
     }
@@ -60,7 +59,7 @@ class EditContactComponent extends Component {
         this.setState({open: false})
         let { id, name, phone, email, job, group, active, groupoptions } = this.state
         let groupid = groupoptions.find(o => o.text === group).key
-        this.state.contactid ? 
+        this.state.id ? 
             await this.props.editContact({id, name, phone, email, job, group: groupid, active}) :
             await this.props.addContact({ name, phone, email, job, group:groupid, active})
         this.props.history.push('/dashboard')
@@ -93,10 +92,9 @@ class EditContactComponent extends Component {
                                 onChange={event => this.onSelectionChange({name: 'group', value: event.target.textContent })} />
                         <Button disabled>Group</Button>
                     </Input>
-
                     {   
                         //display active/inactive checkbox when editing existing contact
-                        this.state.contactid && 
+                        this.state.id && 
                         <Checkbox name = 'active' toggle style={{marginTop:'1em'}}
                                 label={ this.state.active ? 'deactivate' : 'activate'}
                                 checked = { this.state.active }
@@ -121,7 +119,6 @@ class EditContactComponent extends Component {
 }
 
 function mapStateToPrps(state) {
-    console.log('mapstatetoprops in edit contact', state)
     return {
         contact: state.currentContact,
         groups: state.group.groups,

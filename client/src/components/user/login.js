@@ -29,7 +29,6 @@ class LoginComponent extends Component {
         let { email, password } = this.state
         await this.props.loginUser({email, password})
         let token = sessionStorage.getItem('token')
-        console.log(token)
         if(token && token !== null && token !== undefined && token !== 'undefined') {
             this.setState({open: false})       
             this.props.history.push('/dashboard')

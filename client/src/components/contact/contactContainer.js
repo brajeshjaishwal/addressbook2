@@ -42,7 +42,6 @@ class ContactContainerComponent extends Component {
             contactList = selectedGroup.contacts
             groupname = selectedGroup.name
         }
-        console.log('contact container render', groupname, contactList)
         const options = [
                             { key: 'name', text: 'name', value: 'name' },
                             { key: 'email', text: 'email', value: 'email' },
@@ -106,7 +105,6 @@ class ContactContainerComponent extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('mapstatetoprops contactContainers', state)
     return {
         selectedGroup: state.group.selectedGroup,
         error: state.group.error

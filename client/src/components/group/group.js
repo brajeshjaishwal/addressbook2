@@ -20,7 +20,7 @@ class GroupComponent extends Component {
     }
     render() {
         let { id, name, active, total } = this.props.group
-        let selectedGroup = this.props.match.params.group || 'All Contacts'
+        let selectedGroup = this.props.selectedGroup ? this.props.selectedGroup.name : 'All Contacts'
         let editable = name !== 'All Contacts'
         return (
             <List.Item key={id} >
@@ -32,10 +32,9 @@ class GroupComponent extends Component {
                                     <div >
                                         <Link name={id} to={`/dashboard/${id}`} onClick={this.onSelect}>{name}</Link>
                                         <Label circular style={{marginLeft:'1em'}} >{total}</Label>
-                                        {   editable && 
-                                        <Label circular style={{marginLeft:'1em'}}>
-                                            { active ? 'Active' : 'Inactive' }
-                                        </Label>
+                                        {//don't show it when all contacts are selected
+                                        editable && 
+                                        <Label circular empty style={{marginLeft:'0.5em'}} color={ active ? 'green' : 'grey' } />
                                         }
                                     </div>
                                 </Grid.Column>
@@ -62,7 +61,8 @@ class GroupComponent extends Component {
 function mapStateToProps(state) {
     return {
         loading: state.group.loading,
-        error: state.group.error
+        error: state.group.error,
+        selectedGroup: state.group.selectedGroup
     }
 }
 function mapDispatchToProps(dispatch) {

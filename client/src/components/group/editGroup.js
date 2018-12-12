@@ -19,7 +19,11 @@ class EditGroupComponent extends Component {
         this.setState({group: this.props.dirtyGroup.name, active: this.props.dirtyGroup.active})
     }
     onChangeHandler = (e) => {
+        e.preventDefault()
         this.setState({[e.target.name]: e.target.value})
+    }
+    onCheckedChange = (name) => {
+        this.setState({[name]: !this.state[name]})
     }
 
     onSubmitHandler = async (event) => {
@@ -54,7 +58,7 @@ class EditGroupComponent extends Component {
                     <Checkbox name = 'active' toggle style={{marginTop:'1em'}}
                         label={ this.state.active ? 'deactivate' : 'activate'}
                         checked = { this.state.active }
-                        onChange={this.onChangeHandler} />
+                        onChange={ e => this.onCheckedChange('active')} />
                     { this.props.error && <span style={{color:'red'}}>{this.props.error}</span>}
                     <Divider></Divider>
                     <Button.Group>

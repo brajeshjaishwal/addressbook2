@@ -61,13 +61,13 @@ const groupReducer = (state = initialState, action) => {
                 total: 0,
                 contacts: []
             }
-            if(action.payload.groupid === '00000') {
-                //we want all contacts to be displayed at initial rendering
-                state.groups.forEach(g => {
+            //we want all contacts to be displayed at initial rendering
+            if(action.payload.groups) {
+                action.payload.groups.forEach(g => {
                     if(g.total > 0) 
                         allGroups.contacts.push(...g.contacts)
                 })
-            } 
+            }
             return { ...state, selectedGroup: allGroups, ...action.payload}
         default: 
             return { ...state }

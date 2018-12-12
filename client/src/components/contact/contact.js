@@ -17,7 +17,9 @@ class ContactComponent extends Component {
                     <Card.Content>
                         <Card.Header >
                             {name}
-                            <Label circular style={{marginLeft:'1em'}}>{active ? 'Active' : 'Inactive'}</Label>
+                            <Label circular empty 
+                                color={active ? 'green' : 'grey'} 
+                                style={{marginLeft:'0.5em'}}/>
                         </Card.Header>
                         <Grid columns={2} >
                             <Grid.Row>
