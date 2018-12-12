@@ -35,34 +35,14 @@ class ContactContainerComponent extends Component {
         await this.props.fetchAllGroups({groupid: selectedGroup})
     }
     render() {
-        let selectedGroup = this.props.match.params.group || 'All Contacts'
-        let groupName = this.props.selectedGroup
-        let contactList = [
-                            { 
-                                id: '11111',
-                                name: 'Brajesh jaishwal',
-                                job: 'Senior software developer',
-                                email: 'brajesh.jaishwal@gmail.com',
-                                phone: '9413844898',
-                                active: true,
-                            },
-                            { 
-                                id: '12455',
-                                name: 'Shakun jaiswal',
-                                job: 'Project leader',
-                                email: 'shakun.jaiswal@gmail.com',
-                                phone: '7665432898',
-                                active: true,
-                            },
-                            { 
-                                id: '112333',
-                                name: 'Yesha jaiswal',
-                                job: 'Software developer',
-                                email: 'yesha.jaiswal@gmail.com',
-                                phone: '12345678',
-                                active: false,
-                            }
-                        ]
+        let selectedGroup = this.props.selectedGroup// this.props.match.params.group || 'All Contacts'
+        let contactList = null
+        let groupname = ''
+        if(selectedGroup) {
+            contactList = selectedGroup.contacts
+            groupname = selectedGroup.name
+        }
+        console.log('contact container render', groupname, contactList)
         const options = [
                             { key: 'name', text: 'name', value: 'name' },
                             { key: 'email', text: 'email', value: 'email' },
@@ -80,7 +60,7 @@ class ContactContainerComponent extends Component {
                         <Grid.Column width={4}>
                             <Header color='yellow' >
                                 <Icon name='address card' />
-                                <Header.Content>{selectedGroup}</Header.Content>
+                                <Header.Content>{groupname}</Header.Content>
                             </Header>
                         </Grid.Column>
                         <Grid.Column width={8}>
@@ -96,12 +76,15 @@ class ContactContainerComponent extends Component {
                                 <Button compact icon='sort'/>
                             </Input>
                         </Grid.Column>
-                    </Grid>            
-                    <List selection>
-                        {
-                            contactList.map(c => <ContactComponent key={c.email} contact={c} {...this.props}/>)
-                        }
-                    </List>
+                    </Grid>
+                    {    contactList && 
+                        <List selection> 
+                            { 
+                                contactList.map(c => <ContactComponent key={c.email} contact={c} {...this.props}/>)
+                            }
+                        </List>
+                    }
+                    
                 </Segment>
                 <Segment>
                     <Pagination pointing secondary
@@ -123,10 +106,9 @@ class ContactContainerComponent extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log('mapstatetoprops', state)
+    console.log('mapstatetoprops contactContainers', state)
     return {
         selectedGroup: state.group.selectedGroup,
-        selectedGroupItems: state.group.selectedGroupItems,
         error: state.group.error
     }
 }

@@ -2,7 +2,7 @@ import globals from '../constants/group'
 
 let initialState = {
     groups: [/* list of groups and underneath contact list*/],
-    selectedGroup: 'All Contacts',
+    selectedGroup: null,
     loading: false,
     error: '',
     errorMessage: '',
@@ -34,11 +34,27 @@ const groupReducer = (state = initialState, action) => {
         case globals.FetchCachedGroupNames:
             return { ...state, groupNames: state.groups }
         case globals.FetchCachedGroupItems:
-            let contacts = action.payload.groupid === '00000' ?
-                            state.groups.map(g => g.contacts) :
-                            state.groups.filter(g => g.id === action.payload.groupid)
-            console.log('fetchcachedgroupitems', contacts)
-            return { ...state, selectedGroupContacts: contacts}
+            let selectedGroup = {
+                id: '00000',
+                name: 'All Contacts',
+                active: true,
+                total: 0,
+                contacts: []
+            }
+            if(action.payload.groupid === '00000') {
+                //we want all contacts to be displayed
+                //let allContacts = state.groups.map(g => g.contacts)
+                state.groups.forEach(g => {
+                    if(g.total > 0) 
+                        selectedGroup.contacts.concat(g.contacts)
+                })
+                //selectedGroup.contacts.push(allContacts);
+            } else {
+                //selective group
+                selectedGroup = state.groups.find(g => g.id === action.payload.groupid)
+            }
+            console.log('fetchcachedgroupitems', selectedGroup)
+            return { ...state, selectedGroup}
         default: 
             return { ...state }
     }

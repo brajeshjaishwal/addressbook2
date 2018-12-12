@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { List, Card, Grid, Button, Label } from 'semantic-ui-react';
-import { deleteGroupAction } from '../../actions/group';
+import { deleteGroupAction, fetchCachedGroupItemsAction } from '../../actions/group';
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 
@@ -13,6 +13,10 @@ class GroupComponent extends Component {
     onDelete = async event => {
         event.preventDefault()
         await this.props.removeGroup({groupid: this.props.group.id})
+    }
+    onSelect = async event => {
+        event.preventDefault()
+        await this.props.fetchGroup({groupid: event.target.name})
     }
     render() {
         let { id, name, active, total } = this.props.group
@@ -26,7 +30,7 @@ class GroupComponent extends Component {
                             <Grid.Row >
                                 <Grid.Column width='11'>
                                     <div >
-                                        <Link to={`/dashboard/${id}`}>{name}</Link>
+                                        <Link name={id} to={`/dashboard/${id}`} onClick={this.onSelect}>{name}</Link>
                                         <Label circular style={{marginLeft:'1em'}} >{total}</Label>
                                         {   editable && 
                                         <Label circular style={{marginLeft:'1em'}}>
@@ -63,7 +67,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        removeGroup: bindActionCreators(deleteGroupAction, dispatch)
+        removeGroup: bindActionCreators(deleteGroupAction, dispatch),
+        fetchGroup: bindActionCreators(fetchCachedGroupItemsAction, dispatch)
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(GroupComponent)
