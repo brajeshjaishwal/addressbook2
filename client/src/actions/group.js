@@ -2,7 +2,7 @@ import constants from '../constants/group'
 import { proxy, handleError, getConfig } from '../api/api'
 
 const { AddGroup, AddGroup_Success, AddGroup_Failure,
-        FetchCachedGroup, FetchCachedGroupNames,
+        FetchCachedGroup, FetchCachedGroupNames, FetchCachedGroupItems,
         FetchGroupList, FetchGroupList_Success, FetchGroupList_Failure,
         RemoveGroup, RemoveGroup_Success, RemoveGroup_Failure,
         EditGroup, EditGroup_Success, EditGroup_Failure } = constants
@@ -105,6 +105,13 @@ export const fetchAllGroupsAction = function () {
 export const fetchCachedGroupAction = function ({groupid}) {
     return {
         type: FetchCachedGroup,
+        payload: { groupid }
+    }
+}
+
+export const fetchCachedGroupItemsAction = function ({groupid}) {
+    return {
+        type: FetchCachedGroupItems,
         payload: { groupid }
     }
 }

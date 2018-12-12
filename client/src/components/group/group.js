@@ -26,7 +26,7 @@ class GroupComponent extends Component {
                             <Grid.Row >
                                 <Grid.Column width='11'>
                                     <div >
-                                        <Link to={`/dashboard/${name}`}>{name}</Link>
+                                        <Link to={`/dashboard/${id}`}>{name}</Link>
                                         <Label circular style={{marginLeft:'1em'}} >{total}</Label>
                                         {   editable && 
                                         <Label circular style={{marginLeft:'1em'}}>

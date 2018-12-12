@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { List, Segment, Header, Grid, Input, Icon, Select, Button, Pagination } from 'semantic-ui-react';
 import ContactComponent from './contact';
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import { fetchCachedGroupItemsAction } from '../../actions/group'
 
-export default class ContactContainerComponent extends Component {
+class ContactContainerComponent extends Component {
     state = {
         activePage: 1,
         totalPages: 5,
@@ -26,8 +29,14 @@ export default class ContactContainerComponent extends Component {
     onChangeHandler = e => {
         this.setState({[e.target.name]: e.target.value})
     }
+
+    async componentDidMount() {
+        let selectedGroup = this.props.match.params.group || '00000'
+        await this.props.fetchAllGroups({groupid: selectedGroup})
+    }
     render() {
         let selectedGroup = this.props.match.params.group || 'All Contacts'
+        let groupName = this.props.selectedGroup
         let contactList = [
                             { 
                                 id: '11111',
@@ -95,7 +104,7 @@ export default class ContactContainerComponent extends Component {
                     </List>
                 </Segment>
                 <Segment>
-                    <Pagination
+                    <Pagination pointing secondary
                         activePage={this.state.activePage}
                         onPageChange={this.handlePaginationChange}
                         totalPages={this.state.totalPages}
@@ -112,3 +121,20 @@ export default class ContactContainerComponent extends Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    console.log('mapstatetoprops', state)
+    return {
+        selectedGroup: state.group.selectedGroup,
+        selectedGroupItems: state.group.selectedGroupItems,
+        error: state.group.error
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchAllGroups: bindActionCreators(fetchCachedGroupItemsAction, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactContainerComponent)

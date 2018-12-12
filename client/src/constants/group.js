@@ -13,6 +13,7 @@ const constants = {
 
     FetchCachedGroup: 'FetchCachedGroup',
     FetchCachedGroupNames: 'FetchCachedGroupName',
+    FetchCachedGroupItems: 'FetchCachedGroupItems',
 
     FetchGroupList: 'FetchGroupList',
     FetchGroupList_Success: 'FetchGroupList_Success',

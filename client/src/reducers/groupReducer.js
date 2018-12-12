@@ -33,6 +33,12 @@ const groupReducer = (state = initialState, action) => {
             return { ...state, dirtyGroup }
         case globals.FetchCachedGroupNames:
             return { ...state, groupNames: state.groups }
+        case globals.FetchCachedGroupItems:
+            let contacts = action.payload.groupid === '00000' ?
+                            state.groups.map(g => g.contacts) :
+                            state.groups.filter(g => g.id === action.payload.groupid)
+            console.log('fetchcachedgroupitems', contacts)
+            return { ...state, selectedGroupContacts: contacts}
         default: 
             return { ...state }
     }
